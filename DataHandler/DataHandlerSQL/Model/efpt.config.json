@@ -1,0 +1,43 @@
+﻿{
+   "CodeGenerationMode": 0,
+   "ContextClassName": "DocAnalyzerContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": "Model",
+   "OutputPath": "Model",
+   "ProjectRootNamespace": "DataHandlerSQL",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "public.employee_reference_by_document",
+         "ObjectType": 0
+      },
+      {
+         "Name": "public.user_credential",
+         "ObjectType": 0
+      },
+      {
+         "Name": "public.employee",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": ".DocAnalyzer",
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": false,
+   "UseHandleBars": false,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false,
+   "UseNoConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSpatial": false
+}
