@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak-db
+spec:
+  selector:
+    matchLabels:
+      app: keycloak-db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels: 
+        app: keycloak-db
+    spec:
+      containers:
+      - image: postgres
+        name: keycloak-db
+        env:
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: keycloak-db-secret
+                key: user
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: keycloak-db-secret
+                key: password
+        ports:
+          - containerPort: 5432
+        volumeMounts:
+          - name: keycloak-db-volume
+            mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: keycloak-db-volume
+          persistentVolumeClaim:
+            claimName: keycloak-db-v-claim
