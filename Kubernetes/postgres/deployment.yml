@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: docanalyzer-postgres
+spec:
+  selector:
+    matchLabels:
+      app: docanalyzer-postgres
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels: 
+        app: docanalyzer-postgres
+    spec:
+      containers:
+      - image: postgres
+        name: docanalyzer-postgres
+        env:
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: docanalyzer-postgres-secret
+                key: user
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: docanalyzer-postgres-secret
+                key: password
+        ports:
+          - containerPort: 5432
+        volumeMounts:
+          - name: docanalyzer-postgres-config
+            mountPath: /docker-entrypoint-initdb.d/init.sql
+            subPath: init.sql
+          - name: docanalyzer-postgres-volume
+            mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: docanalyzer-postgres-volume
+          persistentVolumeClaim:
+            claimName: docanalyzer-postgres-v-claim
+        - name: docanalyzer-postgres-config
+          configMap: 
+            name: docanalyzer-postgres-config
