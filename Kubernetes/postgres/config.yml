@@ -1,0 +1,25 @@
+apiVersion: v1
+data:
+  init.sql: "-- Creates the database\r\nCREATE DATABASE docanalyzer ENCODING 'UTF8';\r\n\r\n--
+    Connects to the database \r\n\\c docanalyzer\r\n\r\n-- Creates the tables\r\nCREATE
+    TABLE EMPLOYEE (\r\n\temployee_id serial PRIMARY KEY,\r\n\tfull_name VARCHAR (100)
+    NOT NULL\r\n);\r\n\r\nCREATE TABLE EMPLOYEE_REFERENCE_BY_DOCUMENT (\r\n\temployee_id
+    INT,\r\n\tCONSTRAINT fk_employee_id FOREIGN KEY (employee_id) REFERENCES EMPLOYEE(employee_id),\r\n\tdocument_id
+    VARCHAR(50) NOT NULL,\r\n\tocurrences INT DEFAULT 0,\r\n\tPRIMARY KEY (employee_id,
+    document_id)\r\n);\r\n\r\nCREATE TABLE USER_CREDENTIAL (\r\n\tuser_id serial PRIMARY
+    KEY,\r\n\tfull_name VARCHAR (100) NOT NULL,\r\n\temail VARCHAR (100) UNIQUE NOT
+    NULL,\r\n\tuser_password VARCHAR (100) NOT NULL\r\n);\r\n\r\n-- Populates the
+    database\r\nINSERT INTO EMPLOYEE (full_name) VALUES ('Jose Montoya');\r\nINSERT
+    INTO EMPLOYEE (full_name) VALUES ('Fabian Gonzalez');\r\nINSERT INTO EMPLOYEE
+    (full_name) VALUES ('Marcelo Sanchez');\r\nINSERT INTO EMPLOYEE (full_name) VALUES
+    ('Arturo Cordoba');\r\nINSERT INTO EMPLOYEE (full_name) VALUES ('Isaac Ramirez');"
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2021-05-17T00:13:27Z"
+  name: docanalyzer-postgres-config
+  namespace: default
+  resourceVersion: "22024"
+  uid: 2dcc4f7a-3b88-4525-a2cf-bddbafd0c9bf
+
+# kubectl create configmap docanalyzer-postgres-config --from-file=init.sql
+# kubectl get configmaps docanalyzer-postgres-config -o yaml > config.yml
