@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "EntityRecognitionAPI": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

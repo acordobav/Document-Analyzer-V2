@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Collections.Generic;
 
 using DataHandlerAzureBlob;
+using DataHandlerMongoDB.Configuration;
 using DataHandlerMongoDB.Repository;
 using DataHandlerMongoDB.Factory;
 using FileMongo = DataHandlerMongoDB.Model.File;
@@ -18,6 +19,14 @@ namespace OffensiveContentAPI
     {
         static void Main(string[] args)
         {
+            string host = Environment.GetEnvironmentVariable("MONGODB_HOST");
+            string port = Environment.GetEnvironmentVariable("MONGODB_PORT");
+            string connection_string = "mongodb://" + host + ":" + port;
+
+            DataHandlerMongoDBConfig.Config.ConnectionString = connection_string;
+            DataHandlerMongoDBConfig.Config.DataBaseName = Environment.GetEnvironmentVariable("MONGODB_NAME");
+            DataHandlerAzureConfig.Config.FolderPath = Environment.GetEnvironmentVariable("OFFENSIVE_FOLDER_PATH");
+
             OffensiveContentConfig.Config.SuscriptionKey = Environment.GetEnvironmentVariable("OFFENSIVE_CONTENT_SUSCRIPTION_KEY");
             OffensiveContentConfig.Config.Endpoint = Environment.GetEnvironmentVariable("OFFENSIVE_CONTENT_ENDPOINT");
 
@@ -30,9 +39,8 @@ namespace OffensiveContentAPI
                 channel.ExchangeDeclare(exchange: "analysis", type: ExchangeType.Fanout);
                 channel.ExchangeDeclare(exchange: "analysis_results", type: ExchangeType.Direct);
 
-                channel.QueueDeclare(queue: "nlp", exclusive: true);
-
-                channel.QueueBind(queue: "nlp",
+                channel.QueueDeclare(queue: "offensive", exclusive: true);
+                channel.QueueBind(queue: "offensive",
                                   exchange: "analysis",
                                   routingKey: "");
 
@@ -76,32 +84,26 @@ namespace OffensiveContentAPI
                         Console.WriteLine(offensive);
                     Console.WriteLine("---------------------------- ");
 
-                    // Update the document in the database
-                    IMongoRepositoryFactory factory = new MongoRepositoryFactory();
-                    IMongoRepository<FileMongo> repository = factory.Create<FileMongo>();
-                    FileMongo update = repository.FindOne(file => file.Title == blob_title && file.Owner == int.Parse(blob_owner));
-                    update.OffensiveContent = blob_offensive_content.ToArray();
-                    //update.Status = true;
-                    repository.ReplaceOne(update);
-
-
                     Console.WriteLine("JSON Results:");
                     var offensiveJSON = JsonSerializer.Serialize(blob_offensive_content);
 
                     // Result Response
-                    byte[] result_bytes = Encoding.UTF8.GetBytes(blob_metadata);
-                    channel.BasicPublish(exchange: "analysis_results",
-                                 routingKey: "nlp",
-                                 basicProperties: null,
-                                 body: result_bytes);
                     byte[] offensive_bytes = Encoding.UTF8.GetBytes(offensiveJSON);
                     channel.BasicPublish(exchange: "analysis_results",
                                  routingKey: "offensive",
                                  basicProperties: null,
                                  body: offensive_bytes);
+
+                    // Update the document in the database
+                    IMongoRepositoryFactory factory = new MongoRepositoryFactory();
+                    IMongoRepository<FileMongo> repository = factory.Create<FileMongo>();
+                    FileMongo update = repository.FindOne(file => file.Title == blob_title && file.Owner == int.Parse(blob_owner));
+                    update.OffensiveContent = blob_offensive_content.ToArray();
+                    update.Status = true;
+                    repository.ReplaceOne(update);
                 };
 
-                channel.BasicConsume(queue: "nlp", autoAck: true, consumer: nlpConsumer);
+                channel.BasicConsume(queue: "offensive", autoAck: true, consumer: nlpConsumer);
                 Console.ReadLine();
             }
         }

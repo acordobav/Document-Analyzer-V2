@@ -2,8 +2,10 @@
 using System.Text;
 using System.Text.Json;
 using System.Collections.Generic;
+using System.Threading;
 
 using DataHandlerAzureBlob;
+using DataHandlerMongoDB.Configuration;
 using DataHandlerMongoDB.Repository;
 using DataHandlerMongoDB.Model;
 using DataHandlerMongoDB.Factory;
@@ -20,8 +22,19 @@ namespace EntityRecognitionAPI
     {
         static void Main(string[] args)
         {
+            string host = Environment.GetEnvironmentVariable("MONGODB_HOST");
+            string port = Environment.GetEnvironmentVariable("MONGODB_PORT");
+            string connection_string = "mongodb://" + host + ":" + port;
+            //Console.WriteLine(connection_string);
+
+            DataHandlerMongoDBConfig.Config.ConnectionString = connection_string;
+            DataHandlerMongoDBConfig.Config.DataBaseName = Environment.GetEnvironmentVariable("MONGODB_NAME");
+            DataHandlerAzureConfig.Config.FolderPath = Environment.GetEnvironmentVariable("ENTITY_FOLDER_PATH");
+
             EntityRecognitionConfig.Config.Credential = Environment.GetEnvironmentVariable("ENTITY_RECOGNITION_CREDENTIAL");
             EntityRecognitionConfig.Config.Endpoint = Environment.GetEnvironmentVariable("ENTITY_RECOGNITION_ENDPOINT");
+
+            RabbitMQConfig.Config.ConnectionUrl = Environment.GetEnvironmentVariable("RABBITMQ_CONNECTION_URL");
 
             var factory = new ConnectionFactory() { Uri = new Uri(RabbitMQConfig.Config.ConnectionUrl) };
             using (var connection = factory.CreateConnection())
@@ -56,24 +69,9 @@ namespace EntityRecognitionAPI
                     string blob_owner = request.Owner.ToString();
                     // Obtain the blob title
                     string blob_title = request.Title;
-                    // Create an empty list for offensive content
+                    // Create an empty list for references
                     List<Reference> blob_references = new List<Reference>();
-
-                    /*
-                    // Create the mongo database file
-                    FileMongo file = new FileMongo();
-                    file.Title = blob_title;
-                    file.Url = blob_url;
-                    file.References = blob_references.ToArray();
-                    file.Owner = int.Parse(blob_owner);
-                    file.Status = false;
-
-                    // Insert the document into the database
-                    IMongoRepositoryFactory factory = new MongoRepositoryFactory();
-                    IMongoRepository<FileMongo> repository = factory.Create<FileMongo>();
-                    repository.InsertOne(file);
-                    */
-
+                    
                     // Obtain the extension of the file
                     string[] words = blob_title.Split(".");
                     string blob_extension = words[1];
@@ -91,6 +89,7 @@ namespace EntityRecognitionAPI
                         Console.WriteLine(reference.Name + ": " + reference.Qty);
                     Console.WriteLine("---------------------------- ");
 
+
                     // Update the document in the database
                     IMongoRepositoryFactory factory = new MongoRepositoryFactory();
                     IMongoRepository<FileMongo> repository = factory.Create<FileMongo>();
@@ -98,25 +97,25 @@ namespace EntityRecognitionAPI
                     update.References = blob_references.ToArray();
                     //update.Status = true;
                     repository.ReplaceOne(update);
+                    //repository.InsertOne(update);
 
                     Console.WriteLine("JSON Results:");
-                    var offensiveJSON = JsonSerializer.Serialize(blob_references);
+                    request.References = blob_references;
+                    request.Id = update.Id.ToString();
+                    var resultJSON = JsonSerializer.Serialize(request);
+                    Console.WriteLine(resultJSON);
 
                     // Result Response
-                    byte[] result_bytes = Encoding.UTF8.GetBytes(blob_metadata);
+                    byte[] result_bytes = Encoding.UTF8.GetBytes(resultJSON);
                     channel.BasicPublish(exchange: "analysis_results",
                                  routingKey: "nlp",
                                  basicProperties: null,
                                  body: result_bytes);
-                    byte[] offensive_bytes = Encoding.UTF8.GetBytes(offensiveJSON);
-                    channel.BasicPublish(exchange: "analysis_results",
-                                 routingKey: "offensive",
-                                 basicProperties: null,
-                                 body: offensive_bytes);
                 };
 
                 channel.BasicConsume(queue: "nlp", autoAck: true, consumer: nlpConsumer);
-                Console.ReadLine();
+
+                while (true) { Thread.Sleep(100000); }
             }
         }
     }

@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Collections.Generic;
 
 using DataHandlerAzureBlob;
+using DataHandlerMongoDB.Configuration;
 using DataHandlerMongoDB.Repository;
 using DataHandlerMongoDB.Model;
 using DataHandlerMongoDB.Factory;
@@ -19,8 +20,17 @@ namespace SentimentAnalysisAPI
     {
         static void Main(string[] args)
         {
+            string host = Environment.GetEnvironmentVariable("MONGODB_HOST");
+            string port = Environment.GetEnvironmentVariable("MONGODB_PORT");
+            string connection_string = "mongodb://" + host + ":" + port;
+            DataHandlerMongoDBConfig.Config.ConnectionString = connection_string;
+            DataHandlerMongoDBConfig.Config.DataBaseName = Environment.GetEnvironmentVariable("MONGODB_NAME");
+            DataHandlerAzureConfig.Config.FolderPath = Environment.GetEnvironmentVariable("SENTIMENT_FOLDER_PATH");
+
             SentimentAnalysisConfig.Config.Credential = Environment.GetEnvironmentVariable("SENTIMENT_ANALYSIS_CREDENTIAL");
             SentimentAnalysisConfig.Config.Endpoint = Environment.GetEnvironmentVariable("SENTIMENT_ANALYSIS_ENDPOINT");
+
+            RabbitMQConfig.Config.ConnectionUrl = Environment.GetEnvironmentVariable("RABBITMQ_CONNECTION_URL");
 
             var factory = new ConnectionFactory() { Uri = new Uri(RabbitMQConfig.Config.ConnectionUrl) };
             using (var connection = factory.CreateConnection())
@@ -29,9 +39,8 @@ namespace SentimentAnalysisAPI
                 channel.ExchangeDeclare(exchange: "analysis", type: ExchangeType.Fanout);
                 channel.ExchangeDeclare(exchange: "analysis_results", type: ExchangeType.Direct);
 
-                channel.QueueDeclare(queue: "nlp", exclusive: true);
-
-                channel.QueueBind(queue: "nlp",
+                channel.QueueDeclare(queue: "sentiment", exclusive: true);
+                channel.QueueBind(queue: "sentiment",
                                   exchange: "analysis",
                                   routingKey: "");
 
@@ -75,6 +84,16 @@ namespace SentimentAnalysisAPI
                         Console.WriteLine(sentiment.Name + ": " + sentiment.Score);
                     Console.WriteLine("---------------------------- ");
 
+                    Console.WriteLine("JSON Results:");
+                    var sentimentsJSON = JsonSerializer.Serialize(blob_sentiments);
+
+                    // Result Response
+                    byte[] offensive_bytes = Encoding.UTF8.GetBytes(sentimentsJSON);
+                    channel.BasicPublish(exchange: "analysis_results",
+                                 routingKey: "sentiment",
+                                 basicProperties: null,
+                                 body: offensive_bytes);
+
                     // Update the document in the database
                     IMongoRepositoryFactory factory = new MongoRepositoryFactory();
                     IMongoRepository<FileMongo> repository = factory.Create<FileMongo>();
@@ -82,25 +101,9 @@ namespace SentimentAnalysisAPI
                     update.Sentiments = blob_sentiments.ToArray();
                     //update.Status = true;
                     repository.ReplaceOne(update);
-
-
-                    Console.WriteLine("JSON Results:");
-                    var offensiveJSON = JsonSerializer.Serialize(blob_sentiments);
-
-                    // Result Response
-                    byte[] result_bytes = Encoding.UTF8.GetBytes(blob_metadata);
-                    channel.BasicPublish(exchange: "analysis_results",
-                                 routingKey: "nlp",
-                                 basicProperties: null,
-                                 body: result_bytes);
-                    byte[] offensive_bytes = Encoding.UTF8.GetBytes(offensiveJSON);
-                    channel.BasicPublish(exchange: "analysis_results",
-                                 routingKey: "offensive",
-                                 basicProperties: null,
-                                 body: offensive_bytes);
                 };
 
-                channel.BasicConsume(queue: "nlp", autoAck: true, consumer: nlpConsumer);
+                channel.BasicConsume(queue: "sentiment", autoAck: true, consumer: nlpConsumer);
                 Console.ReadLine();
             }
         }

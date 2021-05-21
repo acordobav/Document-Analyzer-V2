@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMQ", "RabbitMQ\Rabbit
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileHandler", "FileHandler\FileHandler.csproj", "{D0595564-7A94-492C-8EA5-0443E7B99CD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataHandlerAzureBlob", "DataHandlerAzureBlob\DataHandlerAzureBlob.csproj", "{D0ECCB8E-2FBC-4ABE-B792-57D32ACC6F71}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataHandlerAzureBlob", "DataHandlerAzureBlob\DataHandlerAzureBlob.csproj", "{D0ECCB8E-2FBC-4ABE-B792-57D32ACC6F71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{5E3500DA-F421-4F9A-8355-111F9AE89ED6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{D0ECCB8E-2FBC-4ABE-B792-57D32ACC6F71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0ECCB8E-2FBC-4ABE-B792-57D32ACC6F71}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0ECCB8E-2FBC-4ABE-B792-57D32ACC6F71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E3500DA-F421-4F9A-8355-111F9AE89ED6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E3500DA-F421-4F9A-8355-111F9AE89ED6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E3500DA-F421-4F9A-8355-111F9AE89ED6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E3500DA-F421-4F9A-8355-111F9AE89ED6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
