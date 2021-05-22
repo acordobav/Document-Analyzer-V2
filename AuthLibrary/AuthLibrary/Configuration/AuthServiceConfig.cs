@@ -25,37 +25,10 @@ namespace AuthLibrary.Configuration
             }
         }
 
-        private string _secretKey;
-        private string _issuerToken;
-        private int _expirationTime;
-        private string _authType;
-
-        /// <summary>
-        /// SecretKey used to encrypt the token
-        /// </summary>
-        public string SecretKey
-        {
-            get { return _secretKey; }
-            set { _secretKey = value; }
-        }
-
-        /// <summary>
-        /// Signurate of the issuer application
-        /// </summary>
-        public string IssuerToken
-        {
-            get { return _issuerToken; }
-            set { _issuerToken = value; }
-        }
-
-        /// <summary>
-        /// Expiration time of a new token
-        /// </summary>
-        public int ExpirationTime
-        {
-            get { return _expirationTime; }
-            set { _expirationTime = value; }
-        }
+        private string _authType = null;
+        private string _keycloakHost = null;
+        private string _keycloakPort = null;
+        private string _realmName = null;
 
         /// <summary>
         /// Authentication type
@@ -64,6 +37,33 @@ namespace AuthLibrary.Configuration
         {
             get { return _authType; }
             set { _authType = value; }
+        }
+
+        /// <summary>
+        /// IP of the keycloak server
+        /// </summary>
+        public string KeycloakHost
+        {
+            get { return _keycloakHost; }
+            set { _keycloakHost = value; }
+        }
+
+        /// <summary>
+        /// Port used by the keycloak server
+        /// </summary>
+        public string KeycloakPort
+        {
+            get { return _keycloakPort; }
+            set { _keycloakPort = value; }
+        }
+
+        /// <summary>
+        /// Name of the application's realm
+        /// </summary>
+        public string RealmName
+        {
+            get { return _realmName; }
+            set { _realmName = value; }
         }
     }
 }

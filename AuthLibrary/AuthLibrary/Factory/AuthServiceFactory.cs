@@ -6,27 +6,15 @@ using System.Threading.Tasks;
 
 using AuthLibrary.Configuration;
 using AuthLibrary.Authorization;
-using AuthLibrary.Token;
+using AuthLibrary.Authorization.Keycloak;
 
 namespace AuthLibrary.Factory
 {
     public class AuthServiceFactory : IAuthServiceFactory
     {
-        // The configuration is obtained from the AuthServiceConfig
-        private string secretKey;
-        private string issuerToken;
-        private int expirationTime;
-
         private IAuthorizationService _Authorization = null;
-        private ITokenGenerator _TokenGenerator = null;
 
-        public AuthServiceFactory()
-        {
-            // The configuration is obtained from the AuthServiceConfig
-            secretKey = AuthServiceConfig.Config.SecretKey;
-            issuerToken = AuthServiceConfig.Config.IssuerToken;
-            expirationTime = AuthServiceConfig.Config.ExpirationTime;
-        }
+        public AuthServiceFactory() { }
 
         /// <summary>
         /// Method to obtain an Authorization Service
@@ -46,35 +34,13 @@ namespace AuthLibrary.Factory
         /// <returns>IAuthorizationService</returns>
         private IAuthorizationService buildAuthorizationService()
         {
-            // Creation of the validator
-            ITokenValidator tokenValidator = new TokenValidator(secretKey, issuerToken);
+            // Getting the keycloak service info
+            string keycloakHost = AuthServiceConfig.Config.KeycloakHost;
+            string keycloakPort = AuthServiceConfig.Config.KeycloakPort;
+            string realmName = AuthServiceConfig.Config.RealmName;
 
             // Creation of the AuthorizationService
-            return new AuthorizationService(tokenValidator);
-        }
-
-        /// <summary>
-        /// Method to obtain a Token Generator
-        /// </summary>
-        /// <returns>Token Generator</returns>
-        public ITokenGenerator TokenGenerator
-        {
-            get
-            {
-                return _TokenGenerator ??= buildTokenGenerator();
-            }
-        }
-
-        /// <summary>
-        /// Method to build a ITokenGenerator
-        /// </summary>
-        /// <returns>ITokenGenerator</returns>
-        private ITokenGenerator buildTokenGenerator()
-        {
-            // Creation of the token generator
-            ITokenGenerator tokenGenerator = new TokenGenerator(secretKey, issuerToken, expirationTime);
-
-            return tokenGenerator;
+            return new KeycloakClient(keycloakHost, keycloakPort, realmName);
         }
     }
 }
