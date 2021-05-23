@@ -18,13 +18,6 @@ CREATE TABLE EMPLOYEE_REFERENCE_BY_DOCUMENT (
 	PRIMARY KEY (employee_id, document_id)
 );
 
-CREATE TABLE USER_CREDENTIAL (
-	user_id serial PRIMARY KEY,
-	full_name VARCHAR (100) NOT NULL,
-	email VARCHAR (100) UNIQUE NOT NULL,
-	user_password VARCHAR (100) NOT NULL
-);
-
 -- Populates the database
 INSERT INTO EMPLOYEE (full_name) VALUES ('Jose Montoya');
 INSERT INTO EMPLOYEE (full_name) VALUES ('Fabian Gonzalez');
