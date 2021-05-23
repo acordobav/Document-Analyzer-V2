@@ -6,19 +6,16 @@
    "FilterSchemas": false,
    "IncludeConnectionString": false,
    "ModelNamespace": null,
-   "OutputContextPath": "Model",
-   "OutputPath": "Model",
-   "ProjectRootNamespace": "DataHandlerSQL",
+   "OutputContextPath": null,
+   "OutputPath": null,
+   "ProceduresReturnList": false,
+   "ProjectRootNamespace": "DataHandlerSQL.Model",
    "Schemas": null,
    "SelectedHandlebarsLanguage": 0,
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
          "Name": "public.employee_reference_by_document",
-         "ObjectType": 0
-      },
-      {
-         "Name": "public.user_credential",
          "ObjectType": 0
       },
       {
@@ -30,7 +27,7 @@
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
    "UseDbContextSplitting": false,
-   "UseFluentApiOnly": false,
+   "UseFluentApiOnly": true,
    "UseHandleBars": false,
    "UseInflector": false,
    "UseLegacyPluralizer": false,
