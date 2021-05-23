@@ -20,30 +20,45 @@ namespace DataHandlerSQL.Model
 
         public virtual DbSet<Employee> Employee { get; set; }
         public virtual DbSet<EmployeeReferenceByDocument> EmployeeReferenceByDocument { get; set; }
-        public virtual DbSet<UserCredential> UserCredential { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "Spanish_Costa Rica.1252");
+
+            modelBuilder.Entity<Employee>(entity =>
+            {
+                entity.ToTable("employee");
+
+                entity.Property(e => e.EmployeeId).HasColumnName("employee_id");
+
+                entity.Property(e => e.FullName)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnName("full_name");
+            });
 
             modelBuilder.Entity<EmployeeReferenceByDocument>(entity =>
             {
                 entity.HasKey(e => new { e.EmployeeId, e.DocumentId })
                     .HasName("employee_reference_by_document_pkey");
 
-                entity.Property(e => e.Ocurrences).HasDefaultValueSql("0");
+                entity.ToTable("employee_reference_by_document");
+
+                entity.Property(e => e.EmployeeId).HasColumnName("employee_id");
+
+                entity.Property(e => e.DocumentId)
+                    .HasMaxLength(50)
+                    .HasColumnName("document_id");
+
+                entity.Property(e => e.Ocurrences)
+                    .HasColumnName("ocurrences")
+                    .HasDefaultValueSql("0");
 
                 entity.HasOne(d => d.Employee)
                     .WithMany(p => p.EmployeeReferenceByDocument)
                     .HasForeignKey(d => d.EmployeeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_employee_id");
-            });
-
-            modelBuilder.Entity<UserCredential>(entity =>
-            {
-                entity.HasKey(e => e.UserId)
-                    .HasName("user_credential_pkey");
             });
 
             OnModelCreatingPartial(modelBuilder);

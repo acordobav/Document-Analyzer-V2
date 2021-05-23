@@ -27,7 +27,7 @@ namespace DataHandlerMongoDB.Model
         public Reference[] References { get; set; }
 
         [BsonElement(elementName: "owner")]
-        public int Owner { get; set; }
+        public string Owner { get; set; }
 
         [BsonElement(elementName: "sentiments")]
         public Sentiment[] Sentiments { get; set; }
