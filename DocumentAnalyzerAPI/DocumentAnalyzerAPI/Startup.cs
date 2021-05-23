@@ -17,6 +17,9 @@ using DataHandlerSQL.Factory;
 using DataHandlerSQL.Configuration;
 using Microsoft.AspNetCore.Authentication;
 
+using APIAuthLibrary;
+using AuthLibrary.Factory;
+using AuthLibrary.Configuration;
 
 namespace DocumentAnalyzerAPI
 {
@@ -48,15 +51,16 @@ namespace DocumentAnalyzerAPI
             // ------------------------------------------------------------------------/
             // Configuration related to the APIAuthLibrary & AuthLibrary
             // ------------------------------------------------------------------------/
-            /*AuthServiceConfig.Config.SecretKey = Environment.GetEnvironmentVariable("DOCANALYZER_TOKEN_SECRETKEY");
-            AuthServiceConfig.Config.IssuerToken = Environment.GetEnvironmentVariable("DOCANALYZER_TOKEN_ISSUERTOKEN");
-            AuthServiceConfig.Config.AuthType = Environment.GetEnvironmentVariable("DOCANALYZER_TOKEN_AUTHTYPE");
+            AuthServiceConfig.Config.KeycloakHost = Environment.GetEnvironmentVariable("KEYCLOAK_HOST");
+            AuthServiceConfig.Config.KeycloakPort = Environment.GetEnvironmentVariable("KEYCLOAK_PORT");
+            AuthServiceConfig.Config.RealmName = Environment.GetEnvironmentVariable("KEYCLOAK_REALMNAME");
+            AuthServiceConfig.Config.AuthType = Environment.GetEnvironmentVariable("KEYCLOAK_TOKEN_AUTHTYPE");
 
 
             services.AddAuthentication("Authorized")
                 .AddScheme<AuthenticationSchemeOptions, AuthHandler>("Authorized", "Authorized", opts => { });
 
-            services.AddScoped<IAuthServiceFactory, AuthServiceFactory>();*/
+            services.AddScoped<IAuthServiceFactory, AuthServiceFactory>();
 
                       
             // ------------------------------------------------------------------------/

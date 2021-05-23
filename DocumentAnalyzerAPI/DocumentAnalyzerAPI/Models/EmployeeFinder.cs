@@ -14,7 +14,7 @@ namespace DocumentASnalyzerAPI.Models
 {
     public class EmployeeFinder
     {
-        public static List<Match> FindEmployeeReferences(NotificationData req, int owner,
+        public static List<Match> FindEmployeeReferences(NotificationData req, string owner,
                                                          IMongoRepository<FileMongo> repository,
                                                          IUnitOfWork unit_of_work)
         {
@@ -99,7 +99,7 @@ namespace DocumentASnalyzerAPI.Models
             return count;
         }
 
-        public static List<UserDocument> FindEmployeeDocuments(int employeeId, IMongoRepository<FileMongo> repository)
+        public static List<UserDocument> FindEmployeeDocuments(string employeeId, IMongoRepository<FileMongo> repository)
         {
             List<FileMongo> userFiles = repository.FilterBy(file => file.Owner == employeeId).ToList();
             List<UserDocument> result = new List<UserDocument>();

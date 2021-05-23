@@ -48,7 +48,7 @@ namespace DocumentAnalyzerAPI.Controllers
             try
             {
                 ClaimsPrincipal claims = HttpContext.User;
-                string owner = claims.FindFirst(ClaimTypes.NameIdentifier).Value;
+                string owner = claims.FindFirst("email").Value;
 
                 //NLPService.NLPController.Instance.AddDocument(data.Url, owner);
 
@@ -66,7 +66,7 @@ namespace DocumentAnalyzerAPI.Controllers
             }
         }*/
 
-        
+
 
         [HttpGet, Route("/documents")]
         public IActionResult GetUserDocuments()
@@ -79,7 +79,7 @@ namespace DocumentAnalyzerAPI.Controllers
                 IUnitOfWork unit_of_work = uow_factory.Create();
 
                 //List<UserDocument> userFiles = EmployeeFinder.FindEmployeeDocuments(int.Parse(owner), mongo_repository);
-                List<UserDocument> userFiles = EmployeeFinder.FindEmployeeDocuments(10001, mongo_repository);
+                List<UserDocument> userFiles = EmployeeFinder.FindEmployeeDocuments("10001", mongo_repository);
                 List<UserDocument> result = EmployeeFinder.GetDocumentReferences(userFiles, unit_of_work);
 
                 /* Returns JSON [{"Title": String,"Status": Boolean, "Url": String,"UserDocumentReferences":[{"Name":String,"Qty":Integer},{"Name":String,"Qty":Integer}, ...]}]
