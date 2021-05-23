@@ -100,7 +100,7 @@ namespace AuthLibrary.Authorization.Keycloak
             }
 
             // Creates the ClaimsIdentity object and ClaimsPrincipal object
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims);
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "CustomKeycloakAuth");
             ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal();
             claimsPrincipal.AddIdentity(claimsIdentity);
 
