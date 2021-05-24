@@ -38,7 +38,7 @@ namespace DocumentAnalyzerAPI.Controllers
         [HttpPost, Route("/documents/notify")]
         public IActionResult Notify(List<NotificationData> requests)
         {
-            BrokerHandler.NotifyAnalyzers(requests, 10001);
+            BrokerHandler.NotifyAnalyzers(requests, "10001");
             return Ok();
         }
 

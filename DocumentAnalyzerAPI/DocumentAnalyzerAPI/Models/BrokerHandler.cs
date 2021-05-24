@@ -14,7 +14,7 @@ namespace DocumentAnalyzerAPI.Models
         // EXCHANGES
         private const String REQUEST_EXCHANGE_NAME = "analysis";
 
-        public static void NotifyAnalyzers(List<NotificationData> requests, int owner)
+        public static void NotifyAnalyzers(List<NotificationData> requests, string owner)
         {
             var factory = new ConnectionFactory() { Uri = new Uri("amqps://ayfpwbex:M_cMEhP-zE1VKSduyZa02bcck07zC8-d@orangutan.rmq.cloudamqp.com/ayfpwbex") };
             using (var connection = factory.CreateConnection())

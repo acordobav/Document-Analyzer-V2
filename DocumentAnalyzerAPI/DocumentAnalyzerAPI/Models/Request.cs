@@ -7,7 +7,7 @@ namespace DocumentAnalyzerAPI.Models
 {
     public class Request
     {
-        public Request(String title, String url, int owner)
+        public Request(String title, String url, string owner)
         {
             Title = title;
             Url = url;
@@ -16,6 +16,6 @@ namespace DocumentAnalyzerAPI.Models
 
         public String Title { get; set; }
         public String Url { get; set; }
-        public int Owner { get; set; }
+        public string Owner { get; set; }
     }
 }
