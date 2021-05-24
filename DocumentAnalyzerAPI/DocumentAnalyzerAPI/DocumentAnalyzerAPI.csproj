@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>1d5b69dc-2493-4e4b-88f8-5cabb3b616dc</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +14,7 @@
     <PackageReference Include="DataHandlerAzureBlob" Version="1.0.5" />
     <PackageReference Include="DataHandlerMongoDB" Version="2.1.0" />
     <PackageReference Include="DataHandlerSQL" Version="1.1.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.13" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="RabbitMQ.Client" Version="6.2.1" />
     <PackageReference Include="Spire.Office" Version="6.4.4" />
