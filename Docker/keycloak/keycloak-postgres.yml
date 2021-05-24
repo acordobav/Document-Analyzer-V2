@@ -1,4 +1,4 @@
-# docker-compose -f keycloak-postgres.yml up
+# docker-compose -f keycloak-postgres.yml up -d
 
 version: '3'
 
@@ -11,7 +11,7 @@ volumes:
 services:
   # Keycloak Database
   postgres:
-      image: postgres
+      image: postgres:13.2
       volumes:
         - keycloak-postgres-db:/var/lib/postgresql/data
       environment:

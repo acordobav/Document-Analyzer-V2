@@ -14,7 +14,7 @@ volumes:
 services:
   # PostgreSQL Database
   postgres: 
-    image: postgres
+    image: postgres:13.2
     volumes: 
       - docanalyzer-postgres:/var/lib/postgresql/data
       - ./postgres-config:/docker-entrypoint-initdb.d/
@@ -26,12 +26,60 @@ services:
         - 5051:5432
     
   # MongoDB Database
-  mongodb:
+  mongo:
     image: mongo:4.4.6
     volumes:
       - docanalyzer-mongodb:/data/db
     ports:
       - 3032:27017
 
+  # EntityRecognition API
+  entityrecognitionapi:
+    image: fagonar96/entityrecognitionapi:latest
+    environment:
+      MONGODB_HOST: mongo
+      MONGODB_PORT: 27017
+      MONGODB_NAME: DocAnalyzer 
+      ENTITY_FOLDER_PATH: /home
+      ENTITY_RECOGNITION_CREDENTIAL: cadb9f0784e1410ca2eb58015096f78c
+      ENTITY_RECOGNITION_ENDPOINT: https://soa-nlp-api.cognitiveservices.azure.com/
+      RABBITMQ_CONNECTION_URL: amqps://ayfpwbex:M_cMEhP-zE1VKSduyZa02bcck07zC8-d@orangutan.rmq.cloudamqp.com/ayfpwbex
+    depends_on:
+      - mongo
+
+  # SentimentAnalysis API
+  sentimentanalysisapi:
+    image: fagonar96/sentimentanalysisapi:latest
+    environment:
+      MONGODB_HOST: mongo 
+      MONGODB_PORT: 27017
+      MONGODB_NAME: DocAnalyzer 
+      SENTIMENT_FOLDER_PATH: /home
+      SENTIMENT_ANALYSIS_CREDENTIAL: cadb9f0784e1410ca2eb58015096f78c
+      SENTIMENT_ANALYSIS_ENDPOINT: https://soa-nlp-api.cognitiveservices.azure.com/
+      RABBITMQ_CONNECTION_URL: amqps://ayfpwbex:M_cMEhP-zE1VKSduyZa02bcck07zC8-d@orangutan.rmq.cloudamqp.com/ayfpwbex
+    depends_on:
+      - mongo
+
+  # OffensiveContent API
+  offensivecontentapi:
+    image: fagonar96/offensivecontentapi:latest
+    environment:
+      MONGODB_HOST: mongo  
+      MONGODB_PORT: 27017
+      MONGODB_NAME: DocAnalyzer 
+      OFFENSIVE_FOLDER_PATH: /home 
+      OFFENSIVE_CONTENT_SUSCRIPTION_KEY: 2b8a375682fc438ca3040a75c5447880
+      OFFENSIVE_CONTENT_ENDPOINT: https://soa-content-moderator-api.cognitiveservices.azure.com/
+      RABBITMQ_CONNECTION_URL: amqps://ayfpwbex:M_cMEhP-zE1VKSduyZa02bcck07zC8-d@orangutan.rmq.cloudamqp.com/ayfpwbex
+    depends_on:
+      - mongo
+
+# docker rm -f $(docker ps -a -q)
+# docker volume rm $(docker volume ls -q)
+
+# docker-compose -f docanalyzer.yml pull
 # docker-compose -f docanalyzer.yml up
 # docker-compose -f docanalyzer.yml down
+
+# docker-compose -f docanalyzer.yml rm -f
