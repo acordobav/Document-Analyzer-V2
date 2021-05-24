@@ -1,4 +1,4 @@
--- Creates the database
+-- Creates Document Analyzer database
 CREATE DATABASE docanalyzer ENCODING 'UTF8';
 
 -- Connects to the database 

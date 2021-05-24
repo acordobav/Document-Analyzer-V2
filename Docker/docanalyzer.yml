@@ -10,9 +10,26 @@ volumes:
   docanalyzer-postgres:
     driver: local
     name: docanalyzer-postgres
-    
+
+  # Keycloak persistent volume 
+  keycloak-postgres-db:
+    driver: local
+    name: keycloak-postgres-db
+
 services:
-  # PostgreSQL Database
+  # Keycloak Database
+  postgres_keycloak:
+    image: postgres:13.2
+    volumes:
+      - keycloak-postgres-db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+    ports: 
+      - 5050:5432
+
+  # Document Analyzer PostgreSQL Database
   postgres: 
     image: postgres:13.2
     volumes: 
@@ -25,13 +42,33 @@ services:
     ports: 
         - 5051:5432
     
-  # MongoDB Database
+  # Document Analyzer MongoDB Database
   mongo:
     image: mongo:4.4.6
     volumes:
       - docanalyzer-mongodb:/data/db
     ports:
       - 3032:27017
+
+  # Keycloak Service  
+  keycloak:
+    image: jboss/keycloak:13.0.0
+    environment:
+      KEYCLOAK_IMPORT: /home/realm-export.json
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres_keycloak
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_SCHEMA: public
+      DB_PASSWORD: password
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    ports:
+      - 8080:8080
+    volumes:
+      - ./keycloak-config:/home
+    depends_on:
+      - postgres_keycloak
 
   # EntityRecognition API
   entityrecognitionapi:
