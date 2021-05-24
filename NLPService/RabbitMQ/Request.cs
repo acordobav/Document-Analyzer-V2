@@ -6,7 +6,7 @@ namespace RabbitMQ
 {
     public class Request
     {
-        public Request(string title, string url, string id, int owner, List<Reference> references)
+        public Request(string title, string url, string id, string owner, List<Reference> references)
         {
             Title = title;
             Url = url;
@@ -17,7 +17,7 @@ namespace RabbitMQ
 
         public string Title { get; set; }
         public string Url { get; set; }
-        public int Owner { get; set; }
+        public string Owner { get; set; }
         public List<Reference> References { get; set; }
         public string Id { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Text;
 using System.Text.Json;
 using System.Collections.Generic;
@@ -61,7 +62,7 @@ namespace SentimentAnalysisAPI
                     // Obtain the blob url
                     string blob_url = request.Url;
                     // Obtain the blob owner
-                    string blob_owner = request.Owner.ToString();
+                    string blob_owner = request.Owner;
                     // Obtain the blob title
                     string blob_title = request.Title;
                     // Create an empty list for offensive content
@@ -97,14 +98,15 @@ namespace SentimentAnalysisAPI
                     // Update the document in the database
                     IMongoRepositoryFactory factory = new MongoRepositoryFactory();
                     IMongoRepository<FileMongo> repository = factory.Create<FileMongo>();
-                    FileMongo update = repository.FindOne(file => file.Title == blob_title && file.Owner == int.Parse(blob_owner));
+                    FileMongo update = repository.FindOne(file => file.Title == blob_title && file.Owner == blob_owner);
                     update.Sentiments = blob_sentiments.ToArray();
                     //update.Status = true;
                     repository.ReplaceOne(update);
                 };
 
                 channel.BasicConsume(queue: "sentiment", autoAck: true, consumer: nlpConsumer);
-                Console.ReadLine();
+
+                while (true) { Thread.Sleep(100000); }
             }
         }
     }

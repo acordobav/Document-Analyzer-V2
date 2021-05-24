@@ -25,7 +25,6 @@ namespace EntityRecognitionAPI
             string host = Environment.GetEnvironmentVariable("MONGODB_HOST");
             string port = Environment.GetEnvironmentVariable("MONGODB_PORT");
             string connection_string = "mongodb://" + host + ":" + port;
-            //Console.WriteLine(connection_string);
 
             DataHandlerMongoDBConfig.Config.ConnectionString = connection_string;
             DataHandlerMongoDBConfig.Config.DataBaseName = Environment.GetEnvironmentVariable("MONGODB_NAME");
@@ -66,7 +65,7 @@ namespace EntityRecognitionAPI
                     // Obtain the blob url
                     string blob_url = request.Url;
                     // Obtain the blob owner
-                    string blob_owner = request.Owner.ToString();
+                    string blob_owner = request.Owner;
                     // Obtain the blob title
                     string blob_title = request.Title;
                     // Create an empty list for references
@@ -93,7 +92,7 @@ namespace EntityRecognitionAPI
                     // Update the document in the database
                     IMongoRepositoryFactory factory = new MongoRepositoryFactory();
                     IMongoRepository<FileMongo> repository = factory.Create<FileMongo>();
-                    FileMongo update = repository.FindOne(file => file.Title == blob_title && file.Owner == int.Parse(blob_owner));
+                    FileMongo update = repository.FindOne(file => file.Title == blob_title && file.Owner == blob_owner);
                     update.References = blob_references.ToArray();
                     //update.Status = true;
                     repository.ReplaceOne(update);
