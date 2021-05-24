@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DataHandlerAzureBlob;
+
 using DataHandlerMongoDB.Configuration;
 using DataHandlerMongoDB.Factory;
 using DataHandlerSQL.Factory;
@@ -43,12 +43,6 @@ namespace DocumentAnalyzerAPI
             });
 
             // ------------------------------------------------------------------------/
-            // Configuration related to the DataHandlerAzure
-            // ------------------------------------------------------------------------/
-            DataHandlerAzureConfig.Config.FolderPath = Environment.GetEnvironmentVariable("DOCANALYZER_FOLDER_PATH");
-
-
-            // ------------------------------------------------------------------------/
             // Configuration related to the APIAuthLibrary & AuthLibrary
             // ------------------------------------------------------------------------/
             AuthServiceConfig.Config.KeycloakHost = Environment.GetEnvironmentVariable("KEYCLOAK_HOST");
@@ -62,11 +56,24 @@ namespace DocumentAnalyzerAPI
 
             services.AddScoped<IAuthServiceFactory, AuthServiceFactory>();
 
-                      
+
             // ------------------------------------------------------------------------/
             // Configuration related to the DataHandlerSQL
             // ------------------------------------------------------------------------/
-            string connStringPostgreSQL = Configuration["ConnectionStrings:PostgreSQL_DB"];
+            string dbHost = Environment.GetEnvironmentVariable("POSTGRES_HOST");
+            string dbPort = Environment.GetEnvironmentVariable("POSTGRES_PORT");
+            string dbName = Environment.GetEnvironmentVariable("POSTGRES_DB_NAME");
+            string dbUser = Environment.GetEnvironmentVariable("POSTGRES_USER");
+            string dbPassword = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD");
+
+            string connStringPostgreSQL =
+                "Server = " + dbHost +
+                "; Port = " + dbPort +
+                "; Database = " + dbName +
+                "; User Id = " + dbUser +
+                "; Password = " + dbPassword +
+                ";";
+
             DataHandlerSQLConfig.Config.ConnectionString = connStringPostgreSQL;
             services.AddScoped<IUnitOfWorkFactory, UnitOfWorkFactory>();
 
@@ -75,7 +82,10 @@ namespace DocumentAnalyzerAPI
             // ------------------------------------------------------------------------/
             // Configuration related to the DataHandlerMongoDB
             // ------------------------------------------------------------------------/
-            string connStringMongoDB = Configuration["ConnectionStrings:MongoDB"];
+            string mongoHost = Environment.GetEnvironmentVariable("MONGODB_HOST");
+            string mongoPort = Environment.GetEnvironmentVariable("MONGODB_PORT");
+            string connStringMongoDB = "mongodb://" + mongoHost + ":" + mongoPort;
+
             DataHandlerMongoDBConfig.Config.ConnectionString = connStringMongoDB;
             DataHandlerMongoDBConfig.Config.DataBaseName = "DocAnalyzerEntities";
 
