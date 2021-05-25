@@ -70,6 +70,27 @@ services:
     depends_on:
       - postgres_keycloak
 
+  documentanalyzerapi:
+    image: arturocv/documentanalyzerapi:latest
+    environment:
+      KEYCLOAK_HOST: 192.168.1.2
+      KEYCLOAK_PORT: 8080
+      KEYCLOAK_REALMNAME: docanalyzer
+      KEYCLOAK_TOKEN_AUTHTYPE: Bearer
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB_NAME: docanalyzer
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      MONGODB_HOST: mongo
+      MONGODB_PORT: 27017
+    ports:
+      - 3033:80
+    depends_on:
+      - mongo
+      - postgres
+      - keycloak
+
   # EntityRecognition API
   entityrecognitionapi:
     image: fagonar96/entityrecognitionapi:latest
