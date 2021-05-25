@@ -14,7 +14,7 @@ namespace DocumentASnalyzerAPI.Models
 {
     public class EmployeeFinder
     {
-        public static List<Match> FindEmployeeReferences(NotificationData req, string owner,
+        /*public static List<Match> FindEmployeeReferences(NotificationData req, int owner,
                                                          IMongoRepository<FileMongo> repository,
                                                          IUnitOfWork unit_of_work)
         {
@@ -97,7 +97,7 @@ namespace DocumentASnalyzerAPI.Models
                 }
             }
             return count;
-        }
+        }*/
 
         public static List<UserDocument> FindEmployeeDocuments(string employeeId, IMongoRepository<FileMongo> repository)
         {
@@ -106,12 +106,12 @@ namespace DocumentASnalyzerAPI.Models
 
             foreach (FileMongo file in userFiles)
             {
-                result.Add(new UserDocument(file.Title, file.Url, file.Id.ToString(), file.Status));
+                result.Add(new UserDocument(file.Title, file.Url, file.Id.ToString(), file.Status, file.Sentiments, file.OffensiveContent));
             }
             return result;
         }
 
-        public static void AddUserReferences(List<Match> processingResult,
+        /*public static void AddUserReferences(List<Match> processingResult,
                                              IUnitOfWork unit_of_work)
         {
             IRepository<EmployeeReferenceByDocument> referencesRepo = unit_of_work.GetRepository<EmployeeReferenceByDocument>();
@@ -133,16 +133,16 @@ namespace DocumentASnalyzerAPI.Models
                 }
                 unit_of_work.Commit();
             }
-        }
+        }*/
 
-        private static bool ReferenceExists(List<EmployeeReferenceByDocument> currentRefs, int empId, string docId)
+        /*private static bool ReferenceExists(List<EmployeeReferenceByDocument> currentRefs, int empId, string docId)
         {
             foreach (EmployeeReferenceByDocument eRef in currentRefs)
             {
                 if (eRef.EmployeeId == empId && eRef.DocumentId.Equals(docId)) return true;
             }
             return false;
-        }
+        }*/
 
         public static List<UserDocument> GetDocumentReferences(List<UserDocument> userDocs, IUnitOfWork unit_of_work)
         {
