@@ -70,6 +70,18 @@ services:
     depends_on:
       - postgres_keycloak
 
+  # FrontEnd application
+  frontend:
+    image: arturocv/docanalyzer-frontend:latest
+    ports:
+      - 3000:80 
+    environment:
+      DOCANALYZER_HOST: documentanalyzerapi
+      DOCANALYZER_PORT: 80
+    depends_on:
+      - documentanalyzerapi
+
+  # Document Analyzer API
   documentanalyzerapi:
     image: arturocv/documentanalyzerapi:latest
     environment:
