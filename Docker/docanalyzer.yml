@@ -81,6 +81,11 @@ services:
     depends_on:
       - documentanalyzerapi
 
+  docanalyzer-websocket:
+    image: arturocv/docanalyzer-websocket:latest
+    ports:
+      - 8765:8765
+
   # Document Analyzer API
   documentanalyzerapi:
     image: arturocv/documentanalyzerapi:latest
