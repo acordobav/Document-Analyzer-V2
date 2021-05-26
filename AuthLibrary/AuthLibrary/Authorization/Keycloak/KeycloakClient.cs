@@ -66,11 +66,12 @@ namespace AuthLibrary.Authorization.Keycloak
 
                 // Sending request to verify the valid status of the token
                 HttpResponseMessage response = await client.GetAsync(_authUrl);
-                if(response.IsSuccessStatusCode)
+
+                // Gets the response content
+                string raw_content = response.Content.ReadAsStringAsync().Result;
+
+                if (response.IsSuccessStatusCode)
                 {
-                    // Gets the response content
-                    string raw_content = response.Content.ReadAsStringAsync().Result;
-                    
                     // Builds claims
                     build_claims(raw_content);
 
@@ -78,6 +79,7 @@ namespace AuthLibrary.Authorization.Keycloak
                 }
                 else
                 {
+                    Console.WriteLine(raw_content);
                     return false;
                 }
 
