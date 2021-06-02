@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DataHandlerMongoDB.Repository;
@@ -16,6 +16,8 @@ using RabbitMQ.Client.Events;
 using System.Text;
 using EmployeeFinderAPI.Models;
 using System.Text.Json;
+
+using System.Threading;
 
 namespace EmployeeFinderAPI
 {
@@ -76,24 +78,24 @@ namespace EmployeeFinderAPI
                                      autoAck: true,
                                      consumer: nlpConsumer);
 
-                Console.ReadLine();
+                while (true) { Thread.Sleep(100000); }
             }
         }
 
         public static void setUpDBConnection()
         {
-            DataHandlerMongoDBConfig.Config.ConnectionString = "mongodb://localhost:27017";
+            DataHandlerMongoDBConfig.Config.ConnectionString = "mongodb://localhost:3032";
             DataHandlerMongoDBConfig.Config.DataBaseName = "DocAnalyzerEntities";
             IMongoRepositoryFactory repositoryFactory = new MongoRepositoryFactory();
             mongoRepository = repositoryFactory.Create<FileMongo>();
 
-            string postgreConnString = "Server = 127.0.0.1; Port = 5432; Database = DocAnalyzer; User Id = postgres; Password = root;";
+            string postgreConnString = "Server = 127.0.0.1; Port = 5051; Database = docanalyzer; User Id = postgres; Password = password;";
             DataHandlerSQLConfig.Config.ConnectionString = postgreConnString;
             IUnitOfWorkFactory uowFactory = new UnitOfWorkFactory();
             unitOfWork = uowFactory.Create();
         }
 
-        public static List<Match> FindEmployeeReferences(String title, int owner, Reference[] refs, String docId)
+        public static List<Match> FindEmployeeReferences(String title, string owner, Reference[] refs, String docId)
         {
             /*FileMongo userFile = mongoRepository.FilterBy(file => file.Title == title && file.Owner == owner).ToList().First();
 
@@ -174,7 +176,7 @@ namespace EmployeeFinderAPI
             return count;
         }
 
-        public static List<UserDocument> FindEmployeeDocuments(int employeeId)
+        public static List<UserDocument> FindEmployeeDocuments(string employeeId)
         {
             List<FileMongo> userFiles = mongoRepository.FilterBy(file => file.Owner == employeeId).ToList();
             List<UserDocument> result = new List<UserDocument>();
