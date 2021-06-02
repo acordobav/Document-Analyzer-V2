@@ -1,0 +1,163 @@
+version: '3'
+
+volumes:
+  # MongoDB persistent volume  
+  docanalyzer-mongodb:
+    driver: local
+    name: docanalyzer-mongodb
+
+  # PostgreSLQ persistent volume  
+  docanalyzer-postgres:
+    driver: local
+    name: docanalyzer-postgres
+
+  # Keycloak persistent volume 
+  keycloak-postgres-db:
+    driver: local
+    name: keycloak-postgres-db
+
+services:
+  # Keycloak Database
+  postgres_keycloak:
+    image: postgres:13.2
+    volumes:
+      - keycloak-postgres-db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+    ports: 
+      - 5050:5432
+
+  # Document Analyzer PostgreSQL Database
+  postgres: 
+    image: postgres:13.2
+    volumes: 
+      - docanalyzer-postgres:/var/lib/postgresql/data
+      - ./postgres-config:/docker-entrypoint-initdb.d/
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports: 
+        - 5051:5432
+    
+  # Document Analyzer MongoDB Database
+  mongo:
+    image: mongo:4.4.6
+    volumes:
+      - docanalyzer-mongodb:/data/db
+    ports:
+      - 3032:27017
+
+  # Keycloak Service  
+  keycloak:
+    image: jboss/keycloak:13.0.0
+    environment:
+      KEYCLOAK_IMPORT: /home/realm-export.json
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres_keycloak
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_SCHEMA: public
+      DB_PASSWORD: password
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    ports:
+      - 8080:8080
+    volumes:
+      - ./keycloak-config:/home
+    depends_on:
+      - postgres_keycloak
+
+  # FrontEnd application
+  frontend:
+    image: arturocv/docanalyzer-frontend:latest
+    ports:
+      - 3000:80 
+    environment:
+      DOCANALYZER_HOST: localhost
+      DOCANALYZER_PORT: 3033
+      WEBSOCKET_HOST: localhost
+      WEBSOCKET_PORT: 8765
+    depends_on:
+      - documentanalyzerapi
+      - docanalyzer-websocket
+
+  docanalyzer-websocket:
+    image: arturocv/docanalyzer-websocket:latest
+    ports:
+      - 8765:8765
+
+  # Document Analyzer API
+  documentanalyzerapi:
+    image: arturocv/documentanalyzerapi:latest
+    environment:
+      KEYCLOAK_HOST: 192.168.1.2
+      KEYCLOAK_PORT: 8080
+      KEYCLOAK_REALMNAME: docanalyzer
+      KEYCLOAK_TOKEN_AUTHTYPE: Bearer
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB_NAME: docanalyzer
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      MONGODB_HOST: mongo
+      MONGODB_PORT: 27017
+    ports:
+      - 3033:80
+    depends_on:
+      - mongo
+      - postgres
+      - keycloak
+
+  # EntityRecognition API
+  entityrecognitionapi:
+    image: fagonar96/entityrecognitionapi:latest
+    environment:
+      MONGODB_HOST: mongo
+      MONGODB_PORT: 27017
+      MONGODB_NAME: DocAnalyzer 
+      ENTITY_FOLDER_PATH: /home
+      ENTITY_RECOGNITION_CREDENTIAL: cadb9f0784e1410ca2eb58015096f78c
+      ENTITY_RECOGNITION_ENDPOINT: https://soa-nlp-api.cognitiveservices.azure.com/
+      RABBITMQ_CONNECTION_URL: amqps://ayfpwbex:M_cMEhP-zE1VKSduyZa02bcck07zC8-d@orangutan.rmq.cloudamqp.com/ayfpwbex
+    depends_on:
+      - mongo
+
+  # SentimentAnalysis API
+  sentimentanalysisapi:
+    image: fagonar96/sentimentanalysisapi:latest
+    environment:
+      MONGODB_HOST: mongo 
+      MONGODB_PORT: 27017
+      MONGODB_NAME: DocAnalyzer 
+      SENTIMENT_FOLDER_PATH: /home
+      SENTIMENT_ANALYSIS_CREDENTIAL: cadb9f0784e1410ca2eb58015096f78c
+      SENTIMENT_ANALYSIS_ENDPOINT: https://soa-nlp-api.cognitiveservices.azure.com/
+      RABBITMQ_CONNECTION_URL: amqps://ayfpwbex:M_cMEhP-zE1VKSduyZa02bcck07zC8-d@orangutan.rmq.cloudamqp.com/ayfpwbex
+    depends_on:
+      - mongo
+
+  # OffensiveContent API
+  offensivecontentapi:
+    image: fagonar96/offensivecontentapi:latest
+    environment:
+      MONGODB_HOST: mongo  
+      MONGODB_PORT: 27017
+      MONGODB_NAME: DocAnalyzer 
+      OFFENSIVE_FOLDER_PATH: /home 
+      OFFENSIVE_CONTENT_SUSCRIPTION_KEY: 2b8a375682fc438ca3040a75c5447880
+      OFFENSIVE_CONTENT_ENDPOINT: https://soa-content-moderator-api.cognitiveservices.azure.com/
+      RABBITMQ_CONNECTION_URL: amqps://ayfpwbex:M_cMEhP-zE1VKSduyZa02bcck07zC8-d@orangutan.rmq.cloudamqp.com/ayfpwbex
+    depends_on:
+      - mongo
+
+# docker rm -f $(docker ps -a -q)
+# docker volume rm $(docker volume ls -q)
+
+# docker-compose -f docanalyzer.yml pull
+# docker-compose -f docanalyzer.yml up
+# docker-compose -f docanalyzer.yml down
+
+# docker-compose -f docanalyzer.yml rm -f

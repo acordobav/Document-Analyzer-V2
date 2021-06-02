@@ -157,6 +157,7 @@ if __name__ == "__main__":
     mq_thread = threading.Thread(target=start_mq_listening, args=())
     mq_thread.start()
 
-    start_server = websockets.serve(data_loop, "localhost", 8765)
+    start_server = websockets.serve(data_loop, None, 8765)
     asyncio.get_event_loop().run_until_complete(start_server)
     asyncio.get_event_loop().run_forever()
+    print("Waiting for clients")
