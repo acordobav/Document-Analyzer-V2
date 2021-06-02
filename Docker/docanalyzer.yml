@@ -78,8 +78,11 @@ services:
     environment:
       DOCANALYZER_HOST: documentanalyzerapi
       DOCANALYZER_PORT: 80
+      WEBSOCKET_HOST: docanalyzer-websocket
+      WEBSOCKET_PORT: 8465
     depends_on:
       - documentanalyzerapi
+      - docanalyzer-websocket
 
   docanalyzer-websocket:
     image: arturocv/docanalyzer-websocket:latest
