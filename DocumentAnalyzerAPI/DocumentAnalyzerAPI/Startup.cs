@@ -87,7 +87,7 @@ namespace DocumentAnalyzerAPI
             string connStringMongoDB = "mongodb://" + mongoHost + ":" + mongoPort;
 
             DataHandlerMongoDBConfig.Config.ConnectionString = connStringMongoDB;
-            DataHandlerMongoDBConfig.Config.DataBaseName = "DocAnalyzerEntities";
+            DataHandlerMongoDBConfig.Config.DataBaseName = "DocAnalyzer";
 
             services.AddScoped<IMongoRepositoryFactory, MongoRepositoryFactory>();
         }

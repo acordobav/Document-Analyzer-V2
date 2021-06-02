@@ -7,6 +7,12 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
+using DataHandlerMongoDB.Configuration;
+using DataHandlerMongoDB.Repository;
+using DataHandlerMongoDB.Model;
+using DataHandlerMongoDB.Factory;
+using FileMongo = DataHandlerMongoDB.Model.File;
+
 namespace DocumentAnalyzerAPI.Models
 {
     public class BrokerHandler
@@ -24,6 +30,27 @@ namespace DocumentAnalyzerAPI.Models
 
                 foreach (NotificationData req in requests)
                 {
+                    // Create an empty lists
+                    List<Reference> blob_references = new List<Reference>();
+                    List<Sentiment> blob_sentiments = new List<Sentiment>();
+                    List<string> blob_offensive_content = new List<string>();
+
+                    // Create the mongo database file
+                    FileMongo file = new FileMongo();
+                    file.Title = req.Title;
+                    file.Url = req.Url;
+                    file.References = blob_references.ToArray();
+                    file.Sentiments = blob_sentiments.ToArray();
+                    file.OffensiveContent = blob_offensive_content.ToArray();
+                    file.Owner = owner;
+                    file.Status = false;
+
+                    // Insert the document into the database
+                    IMongoRepositoryFactory mongoRepository = new MongoRepositoryFactory();
+                    IMongoRepository<FileMongo> repository = mongoRepository.Create<FileMongo>();
+                    repository.InsertOne(file);
+
+
                     var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(new Request(req.Title, req.Url, owner)));
 
                     channel.BasicPublish(exchange: REQUEST_EXCHANGE_NAME,
