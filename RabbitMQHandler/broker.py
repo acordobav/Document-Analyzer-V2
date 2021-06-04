@@ -41,7 +41,8 @@ async def data_loop(websocket, path):
     while True:
         is_data_complete = await loop.run_in_executor(None, check_for_data)
         if is_data_complete:
-            await websocket.send(json.dumps(result_dict))
+            await websocket.send(json.dumps(result_dict).replace("Name","name").replace("Score","score"))
+            # await websocket.send(json.dumps(result_dict))
             restart_variables()
 
 
@@ -55,6 +56,9 @@ def restart_variables():
 
 def process_finder_result(result):
     finder_dict = json.loads(result)
+
+    print('Result: ', result)
+    print('')
 
     result_dict['id'] = finder_dict['Id']
     result_dict['title'] = finder_dict['Title']
