@@ -34,7 +34,9 @@ namespace EmployeeFinderAPI
 
         public static void StartListening()
         {
-            var factory = new ConnectionFactory() { Uri = new Uri("amqps://ayfpwbex:M_cMEhP-zE1VKSduyZa02bcck07zC8-d@orangutan.rmq.cloudamqp.com/ayfpwbex") };
+            string rabbitmq_connection_url = Environment.GetEnvironmentVariable("RABBITMQ_CONNECTION_URL");
+            var factory = new ConnectionFactory() { Uri = new Uri(rabbitmq_connection_url) };
+
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
