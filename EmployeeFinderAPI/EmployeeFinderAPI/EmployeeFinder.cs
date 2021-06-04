@@ -34,7 +34,9 @@ namespace EmployeeFinderAPI
 
         public static void StartListening()
         {
-            var factory = new ConnectionFactory() { Uri = new Uri("amqps://ayfpwbex:M_cMEhP-zE1VKSduyZa02bcck07zC8-d@orangutan.rmq.cloudamqp.com/ayfpwbex") };
+            string rabbitmq_connection_url = Environment.GetEnvironmentVariable("RABBITMQ_CONNECTION_URL");
+            var factory = new ConnectionFactory() { Uri = new Uri(rabbitmq_connection_url) };
+
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
@@ -85,12 +87,37 @@ namespace EmployeeFinderAPI
 
         public static void setUpDBConnection()
         {
-            DataHandlerMongoDBConfig.Config.ConnectionString = "mongodb://localhost:3032";
-            DataHandlerMongoDBConfig.Config.DataBaseName = "DocAnalyzerEntities";
+            // ------------------------------------------------------------------------/
+            // Configuration related to DataHandlerMongoDB
+            // ------------------------------------------------------------------------/
+            string mongoHost = Environment.GetEnvironmentVariable("MONGODB_HOST");
+            string mongoPort = Environment.GetEnvironmentVariable("MONGODB_PORT");
+            string connStringMongoDB = "mongodb://" + mongoHost + ":" + mongoPort;
+            DataHandlerMongoDBConfig.Config.ConnectionString = connStringMongoDB;
+
+            string mongoDbName = Environment.GetEnvironmentVariable("MONGODB_NAME");
+            DataHandlerMongoDBConfig.Config.DataBaseName = mongoDbName;
+
             IMongoRepositoryFactory repositoryFactory = new MongoRepositoryFactory();
             mongoRepository = repositoryFactory.Create<FileMongo>();
 
-            string postgreConnString = "Server = 127.0.0.1; Port = 5051; Database = docanalyzer; User Id = postgres; Password = password;";
+            // ------------------------------------------------------------------------/
+            // Configuration related to DataHandlerSQL
+            // ------------------------------------------------------------------------/
+            string dbHost = Environment.GetEnvironmentVariable("POSTGRES_HOST");
+            string dbPort = Environment.GetEnvironmentVariable("POSTGRES_PORT");
+            string dbName = Environment.GetEnvironmentVariable("POSTGRES_DB_NAME");
+            string dbUser = Environment.GetEnvironmentVariable("POSTGRES_USER");
+            string dbPassword = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD");
+
+            string postgreConnString =
+                "Server = " + dbHost +
+                "; Port = " + dbPort +
+                "; Database = " + dbName +
+                "; User Id = " + dbUser +
+                "; Password = " + dbPassword +
+                ";";
+
             DataHandlerSQLConfig.Config.ConnectionString = postgreConnString;
             IUnitOfWorkFactory uowFactory = new UnitOfWorkFactory();
             unitOfWork = uowFactory.Create();

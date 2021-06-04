@@ -85,9 +85,10 @@ namespace DocumentAnalyzerAPI
             string mongoHost = Environment.GetEnvironmentVariable("MONGODB_HOST");
             string mongoPort = Environment.GetEnvironmentVariable("MONGODB_PORT");
             string connStringMongoDB = "mongodb://" + mongoHost + ":" + mongoPort;
-
             DataHandlerMongoDBConfig.Config.ConnectionString = connStringMongoDB;
-            DataHandlerMongoDBConfig.Config.DataBaseName = "DocAnalyzer";
+
+            string mongoDbName = Environment.GetEnvironmentVariable("MONGODB_NAME");
+            DataHandlerMongoDBConfig.Config.DataBaseName = mongoDbName;
 
             services.AddScoped<IMongoRepositoryFactory, MongoRepositoryFactory>();
         }

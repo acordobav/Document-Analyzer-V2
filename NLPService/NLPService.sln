@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31129.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityRecognitionAPI", "EntityRecognitionAPI\EntityRecognitionAPI.csproj", "{9DEB792D-D4F8-4D3F-8521-8B09EF89CAED}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SentimentAnalysisAPI", "SentimentAnalysisAPI\SentimentAnalysisAPI.csproj", "{DA8B510E-BF2A-4BF3-96C0-108CD0CB0F0B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffensiveContentAPI", "OffensiveContentAPI\OffensiveContentAPI.csproj", "{633F1CD0-BE97-4ACB-BB07-C93B2A777D63}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMQ", "RabbitMQ\RabbitMQ.csproj", "{637B99CF-BBDC-409B-BF8B-F1B2FD7575DA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileHandler", "FileHandler\FileHandler.csproj", "{D0595564-7A94-492C-8EA5-0443E7B99CD1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataHandlerAzureBlob", "DataHandlerAzureBlob\DataHandlerAzureBlob.csproj", "{D0ECCB8E-2FBC-4ABE-B792-57D32ACC6F71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{5E3500DA-F421-4F9A-8355-111F9AE89ED6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9DEB792D-D4F8-4D3F-8521-8B09EF89CAED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DEB792D-D4F8-4D3F-8521-8B09EF89CAED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DEB792D-D4F8-4D3F-8521-8B09EF89CAED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DEB792D-D4F8-4D3F-8521-8B09EF89CAED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA8B510E-BF2A-4BF3-96C0-108CD0CB0F0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA8B510E-BF2A-4BF3-96C0-108CD0CB0F0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA8B510E-BF2A-4BF3-96C0-108CD0CB0F0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA8B510E-BF2A-4BF3-96C0-108CD0CB0F0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{633F1CD0-BE97-4ACB-BB07-C93B2A777D63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{633F1CD0-BE97-4ACB-BB07-C93B2A777D63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{633F1CD0-BE97-4ACB-BB07-C93B2A777D63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{633F1CD0-BE97-4ACB-BB07-C93B2A777D63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{637B99CF-BBDC-409B-BF8B-F1B2FD7575DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{637B99CF-BBDC-409B-BF8B-F1B2FD7575DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{637B99CF-BBDC-409B-BF8B-F1B2FD7575DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{637B99CF-BBDC-409B-BF8B-F1B2FD7575DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0595564-7A94-492C-8EA5-0443E7B99CD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0595564-7A94-492C-8EA5-0443E7B99CD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0595564-7A94-492C-8EA5-0443E7B99CD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0595564-7A94-492C-8EA5-0443E7B99CD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0ECCB8E-2FBC-4ABE-B792-57D32ACC6F71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0ECCB8E-2FBC-4ABE-B792-57D32ACC6F71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0ECCB8E-2FBC-4ABE-B792-57D32ACC6F71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0ECCB8E-2FBC-4ABE-B792-57D32ACC6F71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E3500DA-F421-4F9A-8355-111F9AE89ED6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E3500DA-F421-4F9A-8355-111F9AE89ED6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E3500DA-F421-4F9A-8355-111F9AE89ED6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E3500DA-F421-4F9A-8355-111F9AE89ED6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {23131D66-2D5B-479E-B5AB-2E360E1BAD2E}
+	EndGlobalSection
+EndGlobal

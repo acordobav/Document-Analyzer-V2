@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "OffensiveContentAPI": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

@@ -1,12 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
+    <Authors>Fabian Gonzalez</Authors>
+    <Company>TEC</Company>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EmployeeFinderAPI\EmployeeFinderAPI.csproj" />
+    <PackageReference Include="Spire.Office" Version="6.4.4" />
   </ItemGroup>
 
 </Project>
