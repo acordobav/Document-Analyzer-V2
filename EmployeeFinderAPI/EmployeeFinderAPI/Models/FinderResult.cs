@@ -12,5 +12,7 @@ namespace EmployeeFinderAPI.Models
         public List<Match> Matches { get; set; }
         public String Title { get; set; }
         public String Url { get; set; }
+
+        public String Id { get; set; }
     }
 }
