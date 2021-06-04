@@ -16,7 +16,7 @@ namespace DocumentAnalyzerAPI.Models
             Id = id;
             UserDocumentReferences = new List<Reference>();
             Feelings = sentiments;
-            OffensiveContent = offensive;
+            Obscene_language = offensive;
         } 
 
         public string Title { get; set; }
@@ -25,6 +25,6 @@ namespace DocumentAnalyzerAPI.Models
         public string Id { get; set; }
         public List<Reference> UserDocumentReferences { get; set; }
         public Sentiment[] Feelings { get; set; }
-        public string[] OffensiveContent { get; set; }
+        public string[] Obscene_language { get; set; }
     }
 }
