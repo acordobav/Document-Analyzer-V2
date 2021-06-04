@@ -93,7 +93,7 @@ services:
   documentanalyzerapi:
     image: arturocv/documentanalyzerapi:latest
     environment:
-      KEYCLOAK_HOST: 192.168.1.2
+      KEYCLOAK_HOST: keycloak
       KEYCLOAK_PORT: 8080
       KEYCLOAK_REALMNAME: docanalyzer
       KEYCLOAK_TOKEN_AUTHTYPE: Bearer
@@ -104,12 +104,29 @@ services:
       POSTGRES_PASSWORD: password
       MONGODB_HOST: mongo
       MONGODB_PORT: 27017
+      MONGODB_NAME: DocAnalyzer 
     ports:
       - 3033:80
     depends_on:
       - mongo
       - postgres
       - keycloak
+
+  employeefinder:
+    image: arturocv/employeefinder:latest
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB_NAME: docanalyzer
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      MONGODB_HOST: mongo
+      MONGODB_PORT: 27017
+      MONGODB_NAME: DocAnalyzer
+      RABBITMQ_CONNECTION_URL: amqps://ayfpwbex:M_cMEhP-zE1VKSduyZa02bcck07zC8-d@orangutan.rmq.cloudamqp.com/ayfpwbex
+    depends_on:
+      - mongo
+      - postgres
 
   # EntityRecognition API
   entityrecognitionapi:
