@@ -64,6 +64,7 @@ namespace EmployeeFinderAPI
                     finalResult.Matches = matches;
                     finalResult.Title = req.Title;
                     finalResult.Url = req.Url;
+                    finalResult.Id = req.Id;
 
                     String matchesJSON = JsonSerializer.Serialize(finalResult);
 
