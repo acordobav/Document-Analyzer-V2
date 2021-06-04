@@ -56,7 +56,7 @@ def restart_variables():
 def process_finder_result(result):
     finder_dict = json.loads(result)
 
-    result_dict['id'] = 1
+    result_dict['id'] = finder_dict['Id']
     result_dict['title'] = finder_dict['Title']
     result_dict['url'] = finder_dict['Url']
     result_dict['status'] = True
