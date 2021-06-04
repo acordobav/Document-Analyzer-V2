@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "SentimentAnalysisAPI": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
