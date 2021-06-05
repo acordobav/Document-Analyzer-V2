@@ -29,6 +29,7 @@ namespace EntityRecognitionAPI
             DataHandlerMongoDBConfig.Config.ConnectionString = connection_string;
             DataHandlerMongoDBConfig.Config.DataBaseName = Environment.GetEnvironmentVariable("MONGODB_NAME");
             DataHandlerAzureConfig.Config.FolderPath = Environment.GetEnvironmentVariable("ENTITY_FOLDER_PATH");
+            Console.WriteLine("Folder Path: " + DataHandlerAzureConfig.Config.FolderPath);
 
             EntityRecognitionConfig.Config.Credential = Environment.GetEnvironmentVariable("ENTITY_RECOGNITION_CREDENTIAL");
             EntityRecognitionConfig.Config.Endpoint = Environment.GetEnvironmentVariable("ENTITY_RECOGNITION_ENDPOINT");
@@ -64,6 +65,7 @@ namespace EntityRecognitionAPI
                     Request request = JsonSerializer.Deserialize<Request>(blob_metadata);
                     // Obtain the blob url
                     string blob_url = request.Url;
+                    Console.WriteLine("Url: " + blob_url);
                     // Obtain the blob owner
                     string blob_owner = request.Owner;
                     // Obtain the blob title
@@ -74,10 +76,14 @@ namespace EntityRecognitionAPI
                     // Obtain the extension of the file
                     string[] words = blob_title.Split(".");
                     string blob_extension = words[1];
+                    Console.WriteLine("Extension: " + blob_extension);
                     // Get the blob_file
                     string blob_file = BlobHandler.GetBlobFile(blob_url, blob_extension);
+                    Console.WriteLine("File downloaded: " + blob_file);
                     // Obtain the blob file text
                     string text = FileHandler.FileHandler.GetBlobText(blob_file);
+                    Console.WriteLine("File text obtained");
+                    Console.WriteLine(text);
                     // Obtain the text offensive content
                     blob_references = EntityRecognitionClient.EntityRecognition(text);
 

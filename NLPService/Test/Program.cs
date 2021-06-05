@@ -22,9 +22,10 @@ namespace Test
 
             
             File file = new File();
-            file.Title = "prueba.txt";
+            file.Title = "prueba2.pdf";
             file.Owner = "10001";
-            file.Url = "https://soafiles.blob.core.windows.net/files/prueba.txt";
+         
+            file.Url = "https://soafiles.blob.core.windows.net/files/prueba2.pdf";
             List<Reference> references = new List<Reference>();
             file.References = references.ToArray();
             List<string> offensiveContent = new List<string>();
