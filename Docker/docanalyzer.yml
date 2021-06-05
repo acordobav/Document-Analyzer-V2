@@ -147,7 +147,7 @@ services:
       MONGODB_HOST: mongo
       MONGODB_PORT: 27017
       MONGODB_NAME: DocAnalyzer 
-      ENTITY_FOLDER_PATH: /home
+      ENTITY_FOLDER_PATH: /home/
       ENTITY_RECOGNITION_CREDENTIAL: cadb9f0784e1410ca2eb58015096f78c
       ENTITY_RECOGNITION_ENDPOINT: https://soa-nlp-api.cognitiveservices.azure.com/
       RABBITMQ_CONNECTION_URL: amqps://ayfpwbex:M_cMEhP-zE1VKSduyZa02bcck07zC8-d@orangutan.rmq.cloudamqp.com/ayfpwbex
@@ -161,7 +161,7 @@ services:
       MONGODB_HOST: mongo 
       MONGODB_PORT: 27017
       MONGODB_NAME: DocAnalyzer 
-      SENTIMENT_FOLDER_PATH: /home
+      SENTIMENT_FOLDER_PATH: /home/
       SENTIMENT_ANALYSIS_CREDENTIAL: cadb9f0784e1410ca2eb58015096f78c
       SENTIMENT_ANALYSIS_ENDPOINT: https://soa-nlp-api.cognitiveservices.azure.com/
       RABBITMQ_CONNECTION_URL: amqps://ayfpwbex:M_cMEhP-zE1VKSduyZa02bcck07zC8-d@orangutan.rmq.cloudamqp.com/ayfpwbex
@@ -175,7 +175,7 @@ services:
       MONGODB_HOST: mongo  
       MONGODB_PORT: 27017
       MONGODB_NAME: DocAnalyzer 
-      OFFENSIVE_FOLDER_PATH: /home 
+      OFFENSIVE_FOLDER_PATH: /home/
       OFFENSIVE_CONTENT_SUSCRIPTION_KEY: 2b8a375682fc438ca3040a75c5447880
       OFFENSIVE_CONTENT_ENDPOINT: https://soa-content-moderator-api.cognitiveservices.azure.com/
       RABBITMQ_CONNECTION_URL: amqps://ayfpwbex:M_cMEhP-zE1VKSduyZa02bcck07zC8-d@orangutan.rmq.cloudamqp.com/ayfpwbex
