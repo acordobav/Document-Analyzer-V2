@@ -190,4 +190,4 @@ services:
 # docker-compose -f docanalyzer.yml down
 
 
-# docker-compose -f docanalyzer.yml up --scale documentanalyzerapi=2 --build
+# docker-compose -f docanalyzer.yml up --scale documentanalyzerapi=2 --scale offensivecontentapi=2 --scale sentimentanalysisapi=2 --scale entityrecognitionapi=2 --scale employeefinder=2
