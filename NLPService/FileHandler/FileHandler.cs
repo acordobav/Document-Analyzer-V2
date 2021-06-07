@@ -1,8 +1,10 @@
 ﻿using System;
-using System.IO;
+//using System.IO;
 using System.Text;
 using Spire.Pdf;
 using Spire.Doc;
+using iTextSharp.text.pdf;
+using iTextSharp.text.pdf.parser;
 
 namespace FileHandler
 {
@@ -12,6 +14,19 @@ namespace FileHandler
          * Method which extracts the text from a pdf file.
          * file_path: temporary path of the pdf file.
          */
+        public static string GetTextFromPDF(string file_path) 
+        {
+            PdfReader reader = new PdfReader(file_path);
+            string text = string.Empty;
+            for (int page = 1; page <= reader.NumberOfPages; page++)
+            {
+                text += PdfTextExtractor.GetTextFromPage(reader, page);
+            }
+            reader.Close();
+            return text;
+        }
+
+        /*
         public static string GetTextFromPDF(string file_path)
         {
             // Creates a new pdf document object
@@ -26,6 +41,7 @@ namespace FileHandler
             }
             return text.ToString();
         }
+        */
 
         /**
          * Method which extracts the text from a word file.
@@ -49,7 +65,7 @@ namespace FileHandler
         public static string GetTextFromTxt(string file_path)
         {
             // Creates a strubg with all text from the plain text file
-            string text = File.ReadAllText(file_path);
+            string text = System.IO.File.ReadAllText(file_path);
             return text.ToString();
         }
 
@@ -61,7 +77,7 @@ namespace FileHandler
         public static string GetBlobText(string file_path)
         {
             // Obtain the extension of the file
-            string extension = Path.GetExtension(file_path);
+            string extension = System.IO.Path.GetExtension(file_path);
 
             // Obtain the text from the pdf file
             if (extension.Equals(".pdf"))

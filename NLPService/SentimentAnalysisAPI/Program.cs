@@ -27,6 +27,7 @@ namespace SentimentAnalysisAPI
             DataHandlerMongoDBConfig.Config.ConnectionString = connection_string;
             DataHandlerMongoDBConfig.Config.DataBaseName = Environment.GetEnvironmentVariable("MONGODB_NAME");
             DataHandlerAzureConfig.Config.FolderPath = Environment.GetEnvironmentVariable("SENTIMENT_FOLDER_PATH");
+            Console.WriteLine("Folder Path: " + DataHandlerAzureConfig.Config.FolderPath);
 
             SentimentAnalysisConfig.Config.Credential = Environment.GetEnvironmentVariable("SENTIMENT_ANALYSIS_CREDENTIAL");
             SentimentAnalysisConfig.Config.Endpoint = Environment.GetEnvironmentVariable("SENTIMENT_ANALYSIS_ENDPOINT");
@@ -61,6 +62,7 @@ namespace SentimentAnalysisAPI
                     Request request = JsonSerializer.Deserialize<Request>(blob_metadata);
                     // Obtain the blob url
                     string blob_url = request.Url;
+                    Console.WriteLine("Url: " + blob_url);
                     // Obtain the blob owner
                     string blob_owner = request.Owner;
                     // Obtain the blob title
@@ -71,6 +73,7 @@ namespace SentimentAnalysisAPI
                     // Obtain the extension of the file
                     string[] words = blob_title.Split(".");
                     string blob_extension = words[1];
+                    Console.WriteLine("Extension: " + blob_extension);
                     // Get the blob_file
                     string blob_file = BlobHandler.GetBlobFile(blob_url, blob_extension);
                     // Obtain the blob file text
@@ -87,13 +90,14 @@ namespace SentimentAnalysisAPI
 
                     Console.WriteLine("JSON Results:");
                     var sentimentsJSON = JsonSerializer.Serialize(blob_sentiments);
+                    Console.WriteLine(sentimentsJSON);
 
                     // Result Response
-                    byte[] offensive_bytes = Encoding.UTF8.GetBytes(sentimentsJSON);
+                    byte[] sentiment_bytes = Encoding.UTF8.GetBytes(sentimentsJSON);
                     channel.BasicPublish(exchange: "analysis_results",
                                  routingKey: "sentiment",
                                  basicProperties: null,
-                                 body: offensive_bytes);
+                                 body: sentiment_bytes);
 
                     // Update the document in the database
                     IMongoRepositoryFactory factory = new MongoRepositoryFactory();

@@ -23,10 +23,11 @@ namespace OffensiveContentAPI
             string host = Environment.GetEnvironmentVariable("MONGODB_HOST");
             string port = Environment.GetEnvironmentVariable("MONGODB_PORT");
             string connection_string = "mongodb://" + host + ":" + port;
-
             DataHandlerMongoDBConfig.Config.ConnectionString = connection_string;
             DataHandlerMongoDBConfig.Config.DataBaseName = Environment.GetEnvironmentVariable("MONGODB_NAME");
             DataHandlerAzureConfig.Config.FolderPath = Environment.GetEnvironmentVariable("OFFENSIVE_FOLDER_PATH");
+            Console.WriteLine("Folder Path: " + DataHandlerAzureConfig.Config.FolderPath);
+
 
             OffensiveContentConfig.Config.SuscriptionKey = Environment.GetEnvironmentVariable("OFFENSIVE_CONTENT_SUSCRIPTION_KEY");
             OffensiveContentConfig.Config.Endpoint = Environment.GetEnvironmentVariable("OFFENSIVE_CONTENT_ENDPOINT");
@@ -61,6 +62,7 @@ namespace OffensiveContentAPI
                     Request request = JsonSerializer.Deserialize<Request>(blob_metadata);
                     // Obtain the blob url
                     string blob_url = request.Url;
+                    Console.WriteLine("Url: " + blob_url);
                     // Obtain the blob owner
                     string blob_owner = request.Owner;
                     // Obtain the blob title
@@ -71,10 +73,12 @@ namespace OffensiveContentAPI
                     // Obtain the extension of the file
                     string[] words = blob_title.Split(".");
                     string blob_extension = words[1];
+                    Console.WriteLine("Extension: " + blob_extension);
                     // Get the blob_file
                     string blob_file = BlobHandler.GetBlobFile(blob_url, blob_extension);
                     // Obtain the blob file text
                     string text = FileHandler.FileHandler.GetBlobText(blob_file);
+                    Console.WriteLine(text);
                     // Obtain the text offensive content
                     blob_offensive_content = OffensiveContentClient.OffensiveContent(text);
 
@@ -87,6 +91,7 @@ namespace OffensiveContentAPI
 
                     Console.WriteLine("JSON Results:");
                     var offensiveJSON = JsonSerializer.Serialize(blob_offensive_content);
+                    Console.WriteLine(offensiveJSON);
 
                     // Result Response
                     byte[] offensive_bytes = Encoding.UTF8.GetBytes(offensiveJSON);
