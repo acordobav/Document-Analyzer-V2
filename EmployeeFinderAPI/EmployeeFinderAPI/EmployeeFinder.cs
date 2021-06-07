@@ -42,7 +42,7 @@ namespace EmployeeFinderAPI
             {
                 channel.ExchangeDeclare(exchange: RESULTS_EXCHANGE, type: ExchangeType.Direct);
 
-                channel.QueueDeclare(queue: NLP_RESULT_QUEUE, exclusive: true);
+                channel.QueueDeclare(queue: NLP_RESULT_QUEUE);
 
                 channel.QueueBind(queue: NLP_RESULT_QUEUE,
                                   exchange: RESULTS_EXCHANGE,

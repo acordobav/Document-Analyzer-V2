@@ -43,7 +43,7 @@ namespace EntityRecognitionAPI
                 channel.ExchangeDeclare(exchange: "analysis", type: ExchangeType.Fanout);
                 channel.ExchangeDeclare(exchange: "analysis_results", type: ExchangeType.Direct);
 
-                channel.QueueDeclare(queue: "nlp", exclusive: true);
+                channel.QueueDeclare(queue: "nlp");
 
                 channel.QueueBind(queue: "nlp",
                                   exchange: "analysis",

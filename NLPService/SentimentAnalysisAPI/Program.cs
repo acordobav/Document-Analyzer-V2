@@ -41,7 +41,7 @@ namespace SentimentAnalysisAPI
                 channel.ExchangeDeclare(exchange: "analysis", type: ExchangeType.Fanout);
                 channel.ExchangeDeclare(exchange: "analysis_results", type: ExchangeType.Direct);
 
-                channel.QueueDeclare(queue: "sentiment", exclusive: true);
+                channel.QueueDeclare(queue: "sentiment");
                 channel.QueueBind(queue: "sentiment",
                                   exchange: "analysis",
                                   routingKey: "");

@@ -82,12 +82,15 @@ namespace DocumentAnalyzerAPI
             // ------------------------------------------------------------------------/
             // Configuration related to the DataHandlerMongoDB
             // ------------------------------------------------------------------------/
-            string mongoHost = Environment.GetEnvironmentVariable("MONGODB_HOST");
-            string mongoPort = Environment.GetEnvironmentVariable("MONGODB_PORT");
+            //string mongoHost = Environment.GetEnvironmentVariable("MONGODB_HOST");
+            //string mongoPort = Environment.GetEnvironmentVariable("MONGODB_PORT");
+            string mongoHost = "localhost";
+            string mongoPort = "27017";
             string connStringMongoDB = "mongodb://" + mongoHost + ":" + mongoPort;
             DataHandlerMongoDBConfig.Config.ConnectionString = connStringMongoDB;
 
-            string mongoDbName = Environment.GetEnvironmentVariable("MONGODB_NAME");
+            //string mongoDbName = Environment.GetEnvironmentVariable("MONGODB_NAME");
+            string mongoDbName = "DocAnalyzerEntities";
             DataHandlerMongoDBConfig.Config.DataBaseName = mongoDbName;
 
             services.AddScoped<IMongoRepositoryFactory, MongoRepositoryFactory>();
