@@ -21,6 +21,6 @@ jobs:
       run: |
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - name: Build the Docker image
-      run: cd ./DocumentAnalyzerAPI/DocumentAnalyzerAPI && docker build . --file Dockerfile --tag arturocv/documentanalyzerapi:$(date +%s)
+      run: cd ./DocumentAnalyzerAPI && docker build . --file DocumentAnalyzerAPI/Dockerfile --tag arturocv/documentanalyzerapi:$(date +%s)
     - name: Docker Push
-      run: cd ./DocumentAnalyzerAPI/DocumentAnalyzerAPI && docker push ${{secrets.DOCKER_USER}}/documentanalyzerapi
+      run: cd ./DocumentAnalyzerAPI && docker push ${{secrets.DOCKER_USER}}/documentanalyzerapi
