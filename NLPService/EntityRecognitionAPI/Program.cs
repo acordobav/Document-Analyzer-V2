@@ -43,7 +43,7 @@ namespace EntityRecognitionAPI
                 channel.ExchangeDeclare(exchange: "analysis", type: ExchangeType.Fanout);
                 channel.ExchangeDeclare(exchange: "analysis_results", type: ExchangeType.Direct);
 
-                channel.QueueDeclare(queue: "nlp", exclusive: true);
+                channel.QueueDeclare(queue: "nlp", exclusive: false);
 
                 channel.QueueBind(queue: "nlp",
                                   exchange: "analysis",
@@ -76,14 +76,14 @@ namespace EntityRecognitionAPI
                     // Obtain the extension of the file
                     string[] words = blob_title.Split(".");
                     string blob_extension = words[1];
-                    Console.WriteLine("Extension: " + blob_extension);
+                    //Console.WriteLine("Extension: " + blob_extension);
                     // Get the blob_file
                     string blob_file = BlobHandler.GetBlobFile(blob_url, blob_extension);
-                    Console.WriteLine("File downloaded: " + blob_file);
+                    //Console.WriteLine("File downloaded: " + blob_file);
                     // Obtain the blob file text
                     string text = FileHandler.FileHandler.GetBlobText(blob_file);
                     Console.WriteLine("File text obtained");
-                    Console.WriteLine(text);
+                    //Console.WriteLine(text);
                     // Obtain the text offensive content
                     blob_references = EntityRecognitionClient.EntityRecognition(text);
 

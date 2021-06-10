@@ -41,7 +41,7 @@ namespace SentimentAnalysisAPI
                 channel.ExchangeDeclare(exchange: "analysis", type: ExchangeType.Fanout);
                 channel.ExchangeDeclare(exchange: "analysis_results", type: ExchangeType.Direct);
 
-                channel.QueueDeclare(queue: "sentiment", exclusive: true);
+                channel.QueueDeclare(queue: "sentiment", exclusive: false);
                 channel.QueueBind(queue: "sentiment",
                                   exchange: "analysis",
                                   routingKey: "");
@@ -73,7 +73,7 @@ namespace SentimentAnalysisAPI
                     // Obtain the extension of the file
                     string[] words = blob_title.Split(".");
                     string blob_extension = words[1];
-                    Console.WriteLine("Extension: " + blob_extension);
+                    //Console.WriteLine("Extension: " + blob_extension);
                     // Get the blob_file
                     string blob_file = BlobHandler.GetBlobFile(blob_url, blob_extension);
                     // Obtain the blob file text

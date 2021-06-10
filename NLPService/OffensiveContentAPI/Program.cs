@@ -41,7 +41,7 @@ namespace OffensiveContentAPI
                 channel.ExchangeDeclare(exchange: "analysis", type: ExchangeType.Fanout);
                 channel.ExchangeDeclare(exchange: "analysis_results", type: ExchangeType.Direct);
 
-                channel.QueueDeclare(queue: "offensive", exclusive: true);
+                channel.QueueDeclare(queue: "offensive", exclusive: false);
                 channel.QueueBind(queue: "offensive",
                                   exchange: "analysis",
                                   routingKey: "");
@@ -73,12 +73,12 @@ namespace OffensiveContentAPI
                     // Obtain the extension of the file
                     string[] words = blob_title.Split(".");
                     string blob_extension = words[1];
-                    Console.WriteLine("Extension: " + blob_extension);
+                    //Console.WriteLine("Extension: " + blob_extension);
                     // Get the blob_file
                     string blob_file = BlobHandler.GetBlobFile(blob_url, blob_extension);
                     // Obtain the blob file text
                     string text = FileHandler.FileHandler.GetBlobText(blob_file);
-                    Console.WriteLine(text);
+                    //Console.WriteLine(text);
                     // Obtain the text offensive content
                     blob_offensive_content = OffensiveContentClient.OffensiveContent(text);
 
