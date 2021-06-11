@@ -34,3 +34,22 @@ jobs:
       run: cd ./RabbitMQHandler && docker build . --file Dockerfile --tag ${{secrets.DOCKER_USER}}/docanalyzer-websocket:latest
     - name: WebSocket Docker Push
       run: cd ./RabbitMQHandler && docker push ${{secrets.DOCKER_USER}}/docanalyzer-websocket
+
+  
+  build2:
+  
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: docker login
+      env: 
+        DOCKER_USER: ${{secrets.DOCKER_USER2}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD2}}
+      run: |
+        docker login -u $DOCKER_USER2 -p $DOCKER_PASSWORD2
+        
+    - name: Build the EntityRecognitionAPI Docker image
+      run: cd ./NLPService && docker build . --file EntityRecognitionAPI/Dockerfile --tag ${{secrets.DOCKER_USER2}}/entityrecognitionapi:latest
+    - name: EntityRecognitionAPI Docker Push
+      run: cd ./NLPService && docker push ${{secrets.DOCKER_USER2}}/entityrecognitionapi
