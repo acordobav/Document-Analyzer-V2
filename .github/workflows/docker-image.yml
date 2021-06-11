@@ -22,10 +22,15 @@ jobs:
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - name: Build the DocumentAnalyzerAPI Docker image
       run: cd ./DocumentAnalyzerAPI && docker build . --file DocumentAnalyzerAPI/Dockerfile --tag ${{secrets.DOCKER_USER}}/documentanalyzerapi:latest
-    - name: Docker Push
+    - name: DocumentAnalyzerAPI Docker Push
       run: cd ./DocumentAnalyzerAPI && docker push ${{secrets.DOCKER_USER}}/documentanalyzerapi
       
     - name: Build the EmployeeFinderAPI Docker image
       run: cd ./EmployeeFinderAPI && docker build . --file EmployeeFinder/Dockerfile --tag ${{secrets.DOCKER_USER}}/employeefinder:latest
-    - name: Docker Push
+    - name: EmployeeFinderAPI Docker Push
       run: cd ./EmployeeFinderAPI && docker push ${{secrets.DOCKER_USER}}/employeefinder
+
+    - name: Build the WebSocket Docker image
+      run: cd ./RabbitMQHandler && docker build . --file Dockerfile --tag ${{secrets.DOCKER_USER}}/docanalyzer-websocket:latest
+    - name: WebSocket Docker Push
+      run: cd ./RabbitMQHandler && docker push ${{secrets.DOCKER_USER}}/docanalyzer-websocket
