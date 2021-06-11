@@ -79,3 +79,41 @@ jobs:
       run: cd ./NLPService && docker build . --file EntityRecognitionAPI/Dockerfile --tag ${{secrets.DOCKER_USER2}}/entityrecognitionapi:latest
     - name: EntityRecognitionAPI Docker Push
       run: cd ./NLPService && docker push ${{secrets.DOCKER_USER2}}/entityrecognitionapi
+      
+
+  build-offensivecontentapi:
+  
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: docker login
+      env: 
+        DOCKER_USER: ${{secrets.DOCKER_USER2}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD2}}
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+        
+    - name: Build the OffensiveContentAPI Docker image
+      run: cd ./NLPService && docker build . --file OffensiveContentAPI/Dockerfile --tag ${{secrets.DOCKER_USER2}}/offensivecontentapi:latest
+    - name: OffensiveContentAPI Docker Push
+      run: cd ./NLPService && docker push ${{secrets.DOCKER_USER2}}/offensivecontentapi
+      
+      
+  build-sentimentanalysisapi:
+  
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: docker login
+      env: 
+        DOCKER_USER: ${{secrets.DOCKER_USER2}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD2}}
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+        
+    - name: Build the SentimentAnalysisAPI Docker image
+      run: cd ./NLPService && docker build . --file SentimentAnalysisAPI/Dockerfile --tag ${{secrets.DOCKER_USER2}}/sentimentanalysisapi:latest
+    - name: SentimentAnalysisAPI Docker Push
+      run: cd ./NLPService && docker push ${{secrets.DOCKER_USER2}}/sentimentanalysisapi
