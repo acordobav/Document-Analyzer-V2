@@ -14,7 +14,16 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: arturocv/docanalyzer-frontend
+          image: arturocv/docanalyzer-frontend:latest
           imagePullPolicy: Always
           ports:
           - containerPort: 80
+          env:
+          - name: DOCANALYZER_HOST
+            value: localhost
+          - name: DOCANALYZER_PORT
+            value: "8081"
+          - name: WEBSOCKET_HOST
+            value: localhost
+          - name: WEBSOCKET_PORT
+            value: "8765"
