@@ -27,6 +27,29 @@ spec:
           env:
             - name: KEYCLOAK_IMPORT
               value: /tmp/realm-export.json
+            - name: DB_VENDOR
+              value: POSTGRES
+            - name: DB_ADDR
+              value: keycloak-db
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-db-secret
+                  key: db_name
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-db-secret
+                  key: user
+            - name: DB_SCHEMA
+              value: public
+            - name:  DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-db-secret
+                  key: password
             - name: KEYCLOAK_USER
               valueFrom:
                 secretKeyRef:
@@ -36,22 +59,6 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: keycloak-secret
-                  key: password
-            - name: DB_VENDOR
-              value: postgres
-            - name: DB_ADDR
-              value: "10.108.53.58"
-            - name: DB_PORT
-              value: "5432"
-            - name:  DB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: keycloak-db-secret
-                  key: user
-            - name:  DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: keycloak-db-secret
                   key: password
       volumes: 
         - name: keycloak-config
