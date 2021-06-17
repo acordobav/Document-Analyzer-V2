@@ -14,9 +14,14 @@ spec:
         app: keycloak-db
     spec:
       containers:
-      - image: postgres
+      - image: postgres:13.2
         name: keycloak-db
         env:
+          - name: POSTGRES_DB
+            valueFrom:
+              secretKeyRef:
+                name: keycloak-db-secret
+                key: db_name
           - name: POSTGRES_USER
             valueFrom:
               secretKeyRef:
