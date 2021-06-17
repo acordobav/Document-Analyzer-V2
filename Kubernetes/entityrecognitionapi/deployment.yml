@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: entityrecognitionapi
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: entityrecognitionapi
+  template:
+    metadata:
+      labels:
+        app: entityrecognitionapi
+    spec:
+      containers:
+        - name: entityrecognitionapi
+          image: fagonar96/entityrecognitionapi:latest
+          imagePullPolicy: Always
+          env:
+            - name: MONGODB_HOST
+              value: mongodb
+            - name: MONGODB_PORT
+              value: "27017"
+            - name: MONGODB_NAME
+              value: DocAnalyzer
+
+            - name: ENTITY_FOLDER_PATH
+              value: /home/
+            - name: ENTITY_RECOGNITION_CREDENTIAL
+              value: cadb9f0784e1410ca2eb58015096f78c
+            - name: ENTITY_RECOGNITION_ENDPOINT
+              value: https://soa-nlp-api.cognitiveservices.azure.com/
+
+            - name: RABBITMQ_CONNECTION_URL
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: connection_url
