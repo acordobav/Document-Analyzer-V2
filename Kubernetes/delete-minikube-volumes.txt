@@ -1,3 +1,0 @@
-minikube ssh
-cd /mnt/data
-sudo rm -R keycloak-db/ mongodb/ docanalyzer-postgres/
