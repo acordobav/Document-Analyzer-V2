@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: websocket
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: websocket
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels: 
+        app: websocket
+    spec:
+      containers:
+      - image: arturocv/docanalyzer-websocket:latest
+        name: websocket
+        ports:
+          - containerPort: 8765
