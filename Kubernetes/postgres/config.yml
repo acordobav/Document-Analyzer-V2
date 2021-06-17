@@ -1,25 +1,19 @@
 apiVersion: v1
 data:
-  init.sql: "-- Creates the database\r\nCREATE DATABASE docanalyzer ENCODING 'UTF8';\r\n\r\n--
-    Connects to the database \r\n\\c docanalyzer\r\n\r\n-- Creates the tables\r\nCREATE
-    TABLE EMPLOYEE (\r\n\temployee_id serial PRIMARY KEY,\r\n\tfull_name VARCHAR (100)
-    NOT NULL\r\n);\r\n\r\nCREATE TABLE EMPLOYEE_REFERENCE_BY_DOCUMENT (\r\n\temployee_id
-    INT,\r\n\tCONSTRAINT fk_employee_id FOREIGN KEY (employee_id) REFERENCES EMPLOYEE(employee_id),\r\n\tdocument_id
-    VARCHAR(50) NOT NULL,\r\n\tocurrences INT DEFAULT 0,\r\n\tPRIMARY KEY (employee_id,
-    document_id)\r\n);\r\n\r\nCREATE TABLE USER_CREDENTIAL (\r\n\tuser_id serial PRIMARY
-    KEY,\r\n\tfull_name VARCHAR (100) NOT NULL,\r\n\temail VARCHAR (100) UNIQUE NOT
-    NULL,\r\n\tuser_password VARCHAR (100) NOT NULL\r\n);\r\n\r\n-- Populates the
-    database\r\nINSERT INTO EMPLOYEE (full_name) VALUES ('Jose Montoya');\r\nINSERT
-    INTO EMPLOYEE (full_name) VALUES ('Fabian Gonzalez');\r\nINSERT INTO EMPLOYEE
-    (full_name) VALUES ('Marcelo Sanchez');\r\nINSERT INTO EMPLOYEE (full_name) VALUES
-    ('Arturo Cordoba');\r\nINSERT INTO EMPLOYEE (full_name) VALUES ('Isaac Ramirez');"
+  init.sql: "-- Creates Document Analyzer database\nCREATE DATABASE docanalyzer ENCODING
+    'UTF8';\n\n-- Connects to the database \n\\c docanalyzer\n\n-- Creates the tables\nCREATE
+    TABLE EMPLOYEE (\n\temployee_id serial PRIMARY KEY,\n\tfull_name VARCHAR (100)
+    NOT NULL\n);\n\nCREATE TABLE EMPLOYEE_REFERENCE_BY_DOCUMENT (\n\temployee_id INT,\n\tCONSTRAINT
+    fk_employee_id FOREIGN KEY (employee_id) REFERENCES EMPLOYEE(employee_id),\n\tdocument_id
+    VARCHAR(50) NOT NULL,\n\tocurrences INT DEFAULT 0,\n\tPRIMARY KEY (employee_id,
+    document_id)\n);\n\n-- Populates the database\nINSERT INTO EMPLOYEE (full_name)
+    VALUES ('Jose Montoya');\nINSERT INTO EMPLOYEE (full_name) VALUES ('Fabian Gonzalez');\nINSERT
+    INTO EMPLOYEE (full_name) VALUES ('Marcelo Sanchez');\nINSERT INTO EMPLOYEE (full_name)
+    VALUES ('Arturo Cordoba');\nINSERT INTO EMPLOYEE (full_name) VALUES ('Isaac Ramirez');"
 kind: ConfigMap
 metadata:
-  creationTimestamp: "2021-05-17T00:13:27Z"
+  creationTimestamp: "2021-06-17T22:39:04Z"
   name: docanalyzer-postgres-config
   namespace: default
-  resourceVersion: "22024"
-  uid: 2dcc4f7a-3b88-4525-a2cf-bddbafd0c9bf
-
-# kubectl create configmap docanalyzer-postgres-config --from-file=init.sql
-# kubectl get configmaps docanalyzer-postgres-config -o yaml > config.yml
+  resourceVersion: "43671"
+  uid: 583ebc4c-0e21-453f-a824-5f23b2ba7d6e

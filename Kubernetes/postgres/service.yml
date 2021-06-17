@@ -6,7 +6,7 @@ spec:
   type: NodePort # Exposes the Service on a cluster-internal IP
   ports:
     - protocol: TCP
-      port: 5430
+      port: 5432
       targetPort: 5432
   selector: 
     app: docanalyzer-postgres

@@ -17,6 +17,11 @@ spec:
       - image: postgres
         name: docanalyzer-postgres
         env:
+          - name: POSTGRES_DB
+            valueFrom:
+              secretKeyRef:
+                name: docanalyzer-postgres-secret
+                key: db_name
           - name: POSTGRES_USER
             valueFrom:
               secretKeyRef:
