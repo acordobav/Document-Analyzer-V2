@@ -12,16 +12,16 @@ import { urlAPI } from "../../../helpers/constants";
 
 const columns: GridColDef[] = [
   // { field: 'id', headerName: 'ID', width: 70 },
-  { 
-    field: 'employeeName', 
-    headerName: 'Name', 
+  {
+    field: 'employeeName',
+    headerName: 'Name',
     width: 500,
     headerAlign: 'left',
     align: "left",
   },
-  { 
-    field: 'count', 
-    headerName: 'Total Occurrences', 
+  {
+    field: 'count',
+    headerName: 'Total Occurrences',
     width: 300,
     headerAlign: 'left',
     align: "left",
@@ -37,22 +37,23 @@ const columns: GridColDef[] = [
     align: "left",
 
     renderCell: (params: GridValueGetterParams) => {
-        const documents: any = params.getValue("documents")!;
 
-        const items: JSX.Element[] = [];
-        for(const employee of documents){
-          items.push(<div key={employee.name}><Typography>{employee.name}: {employee.qty}</Typography></div>);
-        }
+      const items: JSX.Element[] = [];
+      const documents: any = params.getValue("documents")!;
 
-        if(documents.length === 0){
-            return <Button style={{ backgroundColor: "#5D5C61", color: "white", textTransform: 'capitalize' }} variant="contained" disabled>No occurrences</Button>
-        } else {
-            return <GenericModal>
-                        <h2>References in documents</h2>
-                        <hr/>
-                        {items}
-                    </GenericModal>;
-        }
+      for (const employee of documents) {
+        items.push(<div key={employee.name}><Typography>{employee.name}: {employee.qty}</Typography></div>);
+      }
+
+      if (documents.length === 0) {
+        return <Button style={{ backgroundColor: "#5D5C61", color: "white", textTransform: 'capitalize' }} variant="contained" disabled>No occurrences</Button>
+      } else {
+        return <GenericModal>
+          <h2>References in documents</h2>
+          <hr />
+          {items}
+        </GenericModal>;
+      }
     }
   }
 ];
@@ -60,23 +61,23 @@ const columns: GridColDef[] = [
 
 export default (() => {
 
-  const [data, setData] = useState([{id: 0, employeeName: "No employees", count: 0, documents: [{}] }]);
+  const [data, setData] = useState([{ id: 0, employeeName: "No employees", count: 0, documents: [{}] }]);
 
-  function setNewData(){
+  function setNewData() {
     axios.get(urlAPI + 'documents/users/count').then(
-        response => {
-          response.data.forEach( (element: any, index: number) => {
-            element["id"] = index;
-          });
-          //console.log(response.data);
-          setData(response.data);
-        }
+      response => {
+        response.data.forEach((element: any, index: number) => {
+          element["id"] = index;
+        });
+        //console.log(response.data);
+        setData(response.data);
+      }
     );
   }
 
   useEffect(() => {
     // setData(employee); // Descomentar para usar datos hardcode
-    setNewData(); 
+    setNewData();
   }, [])
 
   function onClick() {
@@ -89,14 +90,14 @@ export default (() => {
   }
 
   return (
-      <>
-        <h2>
-          Results employees
-          <IconButton onClick={onClick}>
-            <SyncIcon />
-          </IconButton>
-        </h2>
-        <DataTable  rows={data} columns={columns} pageSize={5} height={400}/>
-      </>
+    <>
+      <h2>
+        Results employees
+        <IconButton onClick={onClick}>
+          <SyncIcon />
+        </IconButton>
+      </h2>
+      <DataTable rows={data} columns={columns} pageSize={5} height={400} />
+    </>
   );
 }) as React.SFC;

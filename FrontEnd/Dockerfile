@@ -1,5 +1,5 @@
 # => Build container
-FROM node:10 as builder
+FROM node:12 as builder
 RUN mkdir /app
 WORKDIR /app
 COPY package.json /app
