@@ -23,8 +23,8 @@ const columns: GridColDef[] = [
     headerAlign: 'left',
     align: "left",
     renderCell: (params: GridValueGetterParams) => {
-      const title: string = `${params.getValue("title")}`;
-      const url: string = `${params.getValue("url")}`;
+      const title: string = `${params.getValue(params.id, "title")}`;
+      const url: string = `${params.getValue(params.id, "url")}`;
 
       return <a href={url}>{title}</a>
     }
@@ -41,8 +41,8 @@ const columns: GridColDef[] = [
     //type: 'number',
 
     renderCell: (params: GridValueGetterParams) => {
-        const status: boolean = !!params.getValue("status")!;
-        const documents: any = params.getValue("userDocumentReferences")!;
+        const status: boolean = !!params.getValue(params.id, "status")!;
+        const documents: any = params.getValue(params.id, "userDocumentReferences")!;
 
         const items: JSX.Element[] = [];
         for(const file of documents){
@@ -73,8 +73,8 @@ const columns: GridColDef[] = [
     align: "left",
 
     renderCell: (params: GridValueGetterParams) => {
-        const status: boolean = !!params.getValue("status")!;
-        const feelings: any = params.getValue("feelings")!;
+        const status: boolean = !!params.getValue(params.id, "status")!;
+        const feelings: any = params.getValue(params.id, "feelings")!;
 
         const items: JSX.Element[] = [];
         feelings.forEach(function (value: any) {    
@@ -124,8 +124,8 @@ const columns: GridColDef[] = [
     // }
 
     renderCell: (params: GridValueGetterParams) => {
-      const status: boolean = !!params.getValue("status")!;
-      const dirty_words: any = params.getValue("obscene_language")!;
+      const status: boolean = !!params.getValue(params.id, "status")!;
+      const dirty_words: any = params.getValue(params.id, "obscene_language")!;
       // console.log("DirtyWords: ", dirty_words)
       
 
