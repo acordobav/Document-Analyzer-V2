@@ -391,3 +391,4 @@ yarn-debug.log*
 yarn-error.log*
 
 FrontEnd/public/env-config.js
+Kubernetes/frontend/configmap.yml
