@@ -1,0 +1,7 @@
+.card{
+    /*max-width: 400px;*/
+    align-content: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    background-color: rgba(0, 0, 0, 0.700) !important;
+  }

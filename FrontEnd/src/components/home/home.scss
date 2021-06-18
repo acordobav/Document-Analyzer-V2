@@ -1,0 +1,16 @@
+@import "../../variables.scss";
+
+#right {
+    background-color: $white;
+}
+
+#left {
+    background-color: $dark;
+    color: $white;
+}
+
+.paper {
+    text-align: 'center';
+    padding: 100px;
+    min-height: 100%;
+  }
