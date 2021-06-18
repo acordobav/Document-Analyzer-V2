@@ -367,3 +367,27 @@ FodyWeavers.xsd
 Docker/keycloak/keycloak-config/hsperfdata_jboss/
 
 RabbitMQHandler/.idea/
+
+# dependencies
+FrontEnd/node_modules
+FrontEnd/.pnp
+FrontEnd/.pnp.js
+
+# testing
+FrontEnd/coverage
+
+# production
+FrontEnd/build
+
+# misc
+FrontEnd/.DS_Store
+FrontEnd/.env.local
+FrontEnd/.env.development.local
+FrontEnd/.env.test.local
+FrontEnd/.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+FrontEnd/public/env-config.js
