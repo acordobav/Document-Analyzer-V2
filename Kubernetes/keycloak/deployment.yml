@@ -1,0 +1,71 @@
+---
+# Definition of Keycloak deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+        - name: keycloak
+          image: jboss/keycloak:13.0.0
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: keycloak-config
+              mountPath: /tmp/realm-export.json
+              subPath: realm-export.json
+          ports:
+          - containerPort: 8080
+          env:
+            - name: KEYCLOAK_IMPORT
+              value: /tmp/realm-export.json
+            - name: DB_VENDOR
+              value: POSTGRES
+            - name: DB_ADDR
+              value: keycloak-db
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-db-secret
+                  key: db_name
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-db-secret
+                  key: user
+            - name: DB_SCHEMA
+              value: public
+            - name:  DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-db-secret
+                  key: password
+            - name: KEYCLOAK_USER
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-secret
+                  key: user
+            - name: KEYCLOAK_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-secret
+                  key: password
+      volumes: 
+        - name: keycloak-config
+          configMap: 
+            name: keycloak-config
+
+
+# kubectl apply -f keycloak-deployment.yml
+
+# kubectl delete deployments keycloak-deployment

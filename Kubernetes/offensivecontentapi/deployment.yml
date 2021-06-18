@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: offensivecontentapi
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: offensivecontentapi
+  template:
+    metadata:
+      labels:
+        app: offensivecontentapi
+    spec:
+      containers:
+        - name: offensivecontentapi
+          image: fagonar96/offensivecontentapi:latest
+          imagePullPolicy: Always
+          env:
+            - name: MONGODB_HOST
+              value: mongodb
+            - name: MONGODB_PORT
+              value: "27017"
+            - name: MONGODB_NAME
+              value: DocAnalyzer
+
+            - name: OFFENSIVE_FOLDER_PATH
+              value: /home/
+            - name: OFFENSIVE_CONTENT_SUSCRIPTION_KEY
+              value: 2b8a375682fc438ca3040a75c5447880
+            - name: OFFENSIVE_CONTENT_ENDPOINT
+              value: https://soa-content-moderator-api.cognitiveservices.azure.com/
+
+            - name: RABBITMQ_CONNECTION_URL
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: connection_url

@@ -1,0 +1,13 @@
+# Delete persistent data in minikube
+minikube ssh
+cd /mnt/data
+sudo rm -R keycloak-db/ mongodb/ docanalyzer-postgres/
+
+
+# Expose LoadBalancer services through an external IP
+minikube tunnel
+
+
+# Create config.yml from file
+kubectl create configmap docanalyzer-postgres-config --from-file=init.sql
+kubectl get configmaps docanalyzer-postgres-config -o yaml > config.yml

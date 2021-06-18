@@ -1,0 +1,19 @@
+apiVersion: v1
+data:
+  init.sql: "-- Creates Document Analyzer database\nCREATE DATABASE docanalyzer ENCODING
+    'UTF8';\n\n-- Connects to the database \n\\c docanalyzer\n\n-- Creates the tables\nCREATE
+    TABLE EMPLOYEE (\n\temployee_id serial PRIMARY KEY,\n\tfull_name VARCHAR (100)
+    NOT NULL\n);\n\nCREATE TABLE EMPLOYEE_REFERENCE_BY_DOCUMENT (\n\temployee_id INT,\n\tCONSTRAINT
+    fk_employee_id FOREIGN KEY (employee_id) REFERENCES EMPLOYEE(employee_id),\n\tdocument_id
+    VARCHAR(50) NOT NULL,\n\tocurrences INT DEFAULT 0,\n\tPRIMARY KEY (employee_id,
+    document_id)\n);\n\n-- Populates the database\nINSERT INTO EMPLOYEE (full_name)
+    VALUES ('Jose Montoya');\nINSERT INTO EMPLOYEE (full_name) VALUES ('Fabian Gonzalez');\nINSERT
+    INTO EMPLOYEE (full_name) VALUES ('Marcelo Sanchez');\nINSERT INTO EMPLOYEE (full_name)
+    VALUES ('Arturo Cordoba');\nINSERT INTO EMPLOYEE (full_name) VALUES ('Isaac Ramirez');"
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2021-06-17T22:39:04Z"
+  name: docanalyzer-postgres-config
+  namespace: default
+  resourceVersion: "43671"
+  uid: 583ebc4c-0e21-453f-a824-5f23b2ba7d6e

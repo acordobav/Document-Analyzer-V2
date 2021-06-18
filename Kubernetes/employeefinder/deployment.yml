@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: employeefinder
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: employeefinder
+  template:
+    metadata:
+      labels:
+        app: employeefinder
+    spec:
+      containers:
+        - name: employeefinder
+          image: arturocv/employeefinder:latest
+          imagePullPolicy: Always
+          env:
+            - name: POSTGRES_HOST
+              value: docanalyzer-postgres
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_DB_NAME
+              value: docanalyzer
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: docanalyzer-postgres-secret
+                  key: user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: docanalyzer-postgres-secret
+                  key: password
+            
+            - name: MONGODB_HOST
+              value: mongodb
+            - name: MONGODB_PORT
+              value: "27017"
+            - name: MONGODB_NAME
+              value: DocAnalyzer
+
+            - name: RABBITMQ_CONNECTION_URL
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: connection_url

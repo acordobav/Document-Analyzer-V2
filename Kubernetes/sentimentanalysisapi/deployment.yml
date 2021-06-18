@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sentimentanalysisapi
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sentimentanalysisapi
+  template:
+    metadata:
+      labels:
+        app: sentimentanalysisapi
+    spec:
+      containers:
+        - name: sentimentanalysisapi
+          image: fagonar96/sentimentanalysisapi:latest
+          imagePullPolicy: Always
+          env:
+            - name: MONGODB_HOST
+              value: mongodb
+            - name: MONGODB_PORT
+              value: "27017"
+            - name: MONGODB_NAME
+              value: DocAnalyzer
+
+            - name: SENTIMENT_FOLDER_PATH
+              value: /home/
+            - name: SENTIMENT_ANALYSIS_CREDENTIAL
+              value: cadb9f0784e1410ca2eb58015096f78c
+            - name: SENTIMENT_ANALYSIS_ENDPOINT
+              value: https://soa-nlp-api.cognitiveservices.azure.com/
+
+            - name: RABBITMQ_CONNECTION_URL
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: connection_url
