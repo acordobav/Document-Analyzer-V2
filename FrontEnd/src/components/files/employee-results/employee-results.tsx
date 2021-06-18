@@ -39,7 +39,7 @@ const columns: GridColDef[] = [
     renderCell: (params: GridValueGetterParams) => {
 
       const items: JSX.Element[] = [];
-      const documents: any = params.getValue("documents")!;
+      const documents: any = params.getValue(params.id, "documents")!;
 
       for (const employee of documents) {
         items.push(<div key={employee.name}><Typography>{employee.name}: {employee.qty}</Typography></div>);
