@@ -1,7 +1,7 @@
-kubectl delete secrets keycloak-secret
+kubectl delete -f secret.yml
 
-kubectl delete deployments keycloak-deployment
+kubectl delete -f deployment.yml
 
-kubectl delete services keycloak-service
+kubectl delete -f service.yml
 
-kubectl delete configmap keycloak-config
+kubectl delete -f config.yml

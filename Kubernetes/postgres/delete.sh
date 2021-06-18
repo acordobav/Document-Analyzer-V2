@@ -1,6 +1,9 @@
-kubectl delete deployment docanalyzer-postgres
-kubectl delete service docanalyzer-postgres
-kubectl delete configmap docanalyzer-postgres-config
-kubectl delete pvc docanalyzer-postgres-v-claim
-kubectl delete pv docanalyzer-postgres-volume
-kubectl delete secrets docanalyzer-postgres-secret
+kubectl delete -f config.yml
+
+kubectl delete -f secret.yml
+
+kubectl delete -f service.yml
+
+kubectl delete -f deployment.yml
+
+kubectl delete -f persistent-volume.yml

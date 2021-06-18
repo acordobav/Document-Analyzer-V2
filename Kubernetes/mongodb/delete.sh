@@ -1,4 +1,5 @@
-kubectl delete deployments mongodb
-kubectl delete pvc mongodb-v-claim
-kubectl delete pv mongodb-volume
-kubectl delete services mongodb
+kubectl delete -f service.yml
+
+kubectl delete -f deployment.yml
+
+kubectl delete -f persistent-volume.yml
