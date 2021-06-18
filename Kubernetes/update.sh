@@ -6,7 +6,7 @@ cd websocket            && ./update.sh && cd ..
 cd rabbitmq             && ./update.sh && cd ..
 cd documentanalyzerapi  && ./update.sh && cd ..
 cd employeefinder       && ./update.sh && cd ..
-cd frontend             && ./update.sh && cd ..
 cd entityrecognitionapi && ./update.sh && cd ..
 cd offensivecontentapi  && ./update.sh && cd ..
 cd sentimentanalysisapi && ./update.sh && cd ..
+cd frontend             && ./update.sh && cd ..

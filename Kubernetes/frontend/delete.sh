@@ -1,3 +1,5 @@
-kubectl delete deployments frontend-deployment
+kubectl delete -f deployment.yml
 
-kubectl delete services frontend-service
+kubectl delete -f service.yml
+
+kubectl delete -f configmap.yml

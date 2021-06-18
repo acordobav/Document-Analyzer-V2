@@ -20,10 +20,25 @@ spec:
           - containerPort: 80
           env:
           - name: DOCANALYZER_HOST
-            value: localhost
+            valueFrom:
+              configMapKeyRef:
+                name: backend-endpoints        
+                key: documentanalyzerapi
           - name: DOCANALYZER_PORT
-            value: "8081"
+            value: "80"
+          - name: AUTHSERVERURL
+            valueFrom:
+              configMapKeyRef:
+                name: backend-endpoints        
+                key: keycloak
+          - name: REALM
+            value: docanalyzer
+          - name: AUTHSERVERPORT
+            value: "8080"
           - name: WEBSOCKET_HOST
-            value: localhost
+            valueFrom:
+              configMapKeyRef:
+                name: backend-endpoints        
+                key: websocket
           - name: WEBSOCKET_PORT
             value: "8765"
