@@ -10,3 +10,5 @@ cd keycloak             && ./delete.sh && cd ..
 cd postgres             && ./delete.sh && cd ..
 cd mongodb              && ./delete.sh && cd ..
 cd keycloak-db          && ./delete.sh && cd ..
+
+kubectl delete hpa documentanalyzerapi

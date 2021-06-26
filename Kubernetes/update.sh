@@ -10,3 +10,5 @@ cd entityrecognitionapi && ./update.sh && cd ..
 cd offensivecontentapi  && ./update.sh && cd ..
 cd sentimentanalysisapi && ./update.sh && cd ..
 cd frontend             && ./update.sh && cd ..
+
+kubectl autoscale deployment documentanalyzerapi --cpu-percent=50 --min=1 --max=6
